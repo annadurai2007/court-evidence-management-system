@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEMS - System Settings & Demonstration Preferences</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="cems-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="brand-info">
+          <div class="brand-title">CEMS <span>LEGAL</span></div>
+          <div class="brand-subtitle">Evidence &amp; Custody</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Core Management</div>
+        <a href="dashboard.html" class="nav-link">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="cases.html" class="nav-link">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Cases</span>
+          <span class="nav-badge" data-nav-count="cases">0</span>
+        </a>
+        <a href="evidence.html" class="nav-link">
+          <i class="fa-solid fa-box-archive"></i>
+          <span>Evidence Registry</span>
+          <span class="nav-badge" data-nav-count="evidence">0</span>
+        </a>
+        <a href="add-evidence.html" class="nav-link">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Evidence</span>
+        </a>
+
+        <div class="nav-section-title">Judicial Workflow</div>
+        <a href="custody.html" class="nav-link">
+          <i class="fa-solid fa-timeline"></i>
+          <span>Chain of Custody</span>
+        </a>
+        <a href="court-submission.html" class="nav-link">
+          <i class="fa-solid fa-building-columns"></i>
+          <span>Court Submission</span>
+          <span class="nav-badge" data-nav-count="submissions">0</span>
+        </a>
+        <a href="hearings.html" class="nav-link">
+          <i class="fa-solid fa-gavel"></i>
+          <span>Hearings</span>
+          <span class="nav-badge" data-nav-count="hearings">0</span>
+        </a>
+        <a href="documents.html" class="nav-link">
+          <i class="fa-solid fa-file-contract"></i>
+          <span>Case Documents</span>
+        </a>
+
+        <div class="nav-section-title">Integrity &amp; Auditing</div>
+        <a href="verification.html" class="nav-link">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Verification Lab</span>
+        </a>
+        <a href="reports.html" class="nav-link">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Reports &amp; Exports</span>
+        </a>
+        <a href="activity.html" class="nav-link">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Activity Logs</span>
+        </a>
+
+        <div class="nav-section-title">Administration</div>
+        <a href="users.html" class="nav-link">
+          <i class="fa-solid fa-users"></i>
+          <span>Users &amp; Staff</span>
+        </a>
+        <a href="settings.html" class="nav-link active">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">AD</div>
+          <div class="user-meta">
+            <div class="user-name">Loading...</div>
+            <div class="user-role">Evidence Officer</div>
+          </div>
+          <button class="btn-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="header-left">
+          <button class="btn-sidebar-toggle" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <a href="dashboard.html"><i class="fa-solid fa-house"></i></a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Settings</span>
+          </div>
+        </div>
+
+        <div class="header-center">
+          <div class="global-search-trigger">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search cases, evidence, officers...</span>
+            <span class="search-shortcut">Ctrl+K</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-clock"><i class="fa-regular fa-clock"></i> <span>Loading...</span></div>
+          <div style="position:relative;">
+            <button class="header-action-btn" id="notif-toggle-btn" aria-label="Notifications">
+              <i class="fa-regular fa-bell"></i>
+              <span class="badge-dot" id="notif-unread-dot"></span>
+            </button>
+            <div class="notifications-dropdown" id="notifications-dropdown">
+              <div class="notification-header">
+                <h4>Notifications</h4>
+                <button class="btn-text-action" id="btn-mark-all-read">Mark all as read</button>
+              </div>
+              <div class="notification-list"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1><i class="fa-solid fa-gear" style="color:var(--gold-primary);"></i> System Configuration &amp; Preferences</h1>
+            <p>Display theme, storage quotas, notification policies &amp; demonstration database management.</p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <!-- 1. APPEARANCE & THEME -->
+          <div class="cems-card col-6" style="padding:1.5rem;">
+            <div class="card-title-wrap" style="margin-bottom:1.25rem;">
+              <h3><i class="fa-solid fa-palette" style="color:var(--gold-primary);"></i> Appearance &amp; Display</h3>
+              <p>Customize portal theme and interface data density</p>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:1.25rem;">
+              <div>
+                <label class="form-label">Color Theme</label>
+                <div style="display:flex;gap:16px;margin-top:6px;">
+                  <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                    <input type="radio" name="theme-choice" value="dark" style="accent-color:var(--gold-primary);">
+                    <span>Dark Navy (Enterprise Legal)</span>
+                  </label>
+                  <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                    <input type="radio" name="theme-choice" value="light" style="accent-color:var(--gold-primary);">
+                    <span>Light Surface</span>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                  <input type="checkbox" id="setting-compact-mode" style="accent-color:var(--gold-primary);width:16px;height:16px;">
+                  <div>
+                    <strong style="color:var(--text-main);display:block;font-size:0.9rem;">Compact Table Density</strong>
+                    <span style="font-size:0.75rem;color:var(--text-dim);">Reduces row padding to maximize visible records on screen.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. NOTIFICATIONS & AUDITING POLICIES -->
+          <div class="cems-card col-6" style="padding:1.5rem;">
+            <div class="card-title-wrap" style="margin-bottom:1.25rem;">
+              <h3><i class="fa-solid fa-bell" style="color:var(--accent-blue);"></i> Security &amp; Custody Alerts</h3>
+              <p>Configure anomaly notification triggers</p>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:1.25rem;">
+              <div>
+                <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                  <input type="checkbox" id="setting-custody-alerts" style="accent-color:var(--gold-primary);width:16px;height:16px;margin-top:2px;">
+                  <div>
+                    <strong style="color:var(--text-main);display:block;font-size:0.9rem;">Chain of Custody Anomaly Detection</strong>
+                    <span style="font-size:0.75rem;color:var(--text-dim);">Flag warning banners if custody handover sequences contain gaps.</span>
+                  </div>
+                </label>
+              </div>
+
+              <div>
+                <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                  <input type="checkbox" id="setting-email-notifs" style="accent-color:var(--gold-primary);width:16px;height:16px;margin-top:2px;">
+                  <div>
+                    <strong style="color:var(--text-main);display:block;font-size:0.9rem;">Hearing Docket Reminders</strong>
+                    <span style="font-size:0.75rem;color:var(--text-dim);">Notify officers 3 days prior to scheduled trial dates.</span>
+                  </div>
+                </label>
+              </div>
+
+              <div>
+                <label class="form-label" for="setting-default-court">Default Court Division</label>
+                <input type="text" id="setting-default-court" class="form-control" value="Metropolitan Financial Crimes Court">
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. STORAGE DIAGNOSTICS -->
+          <div class="cems-card col-12" style="padding:1.5rem;">
+            <div class="card-title-wrap" style="margin-bottom:1.25rem;">
+              <h3><i class="fa-solid fa-hard-drive" style="color:var(--status-active-text);"></i> Browser LocalStorage Diagnostics</h3>
+              <p>Live memory footprint of active court and cryptographic records</p>
+            </div>
+            <div id="storage-diagnostics-container"></div>
+          </div>
+
+          <!-- 4. DEMO DATABASE ENGINE & BACKUP -->
+          <div class="cems-card col-12" style="padding:1.5rem;">
+            <div class="card-title-wrap" style="margin-bottom:1rem;">
+              <h3><i class="fa-solid fa-database" style="color:var(--gold-primary);"></i> Demonstration Data Management</h3>
+              <p>Export, import or reset the demonstration judicial dataset</p>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+              <button type="button" class="btn btn-secondary" id="btn-export-backup-json">
+                <i class="fa-solid fa-download"></i> Export Full Database (JSON)
+              </button>
+
+              <label class="btn btn-secondary" style="cursor:pointer;margin:0;">
+                <i class="fa-solid fa-upload"></i> Import Database (JSON)
+                <input type="file" id="import-json-file-input" accept=".json" style="display:none;">
+              </label>
+
+              <button type="button" class="btn btn-danger" id="btn-reset-demo-data">
+                <i class="fa-solid fa-rotate-left"></i> Reset to Default Demonstration Seed
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. ARCHITECTURAL & LEGAL DISCLAIMER -->
+          <div class="cems-card col-12" style="padding:1.5rem;background:rgba(245, 158, 11, 0.04);border-color:var(--gold-border);">
+            <h4 style="font-size:1.05rem;color:var(--gold-primary);margin-bottom:6px;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-scale-unbalanced-flip"></i> Legal Technology Prototype Notice
+            </h4>
+            <p style="font-size:0.86rem;color:var(--text-muted);line-height:1.7;">
+              The Court Evidence Management System (CEMS) is an academic and technological demonstration prototype. 
+              It executes on a client-side architecture using Browser Web APIs and LocalStorage, designed to simulate modern enterprise LegalTech SaaS platforms. 
+              It is completely backend-ready via its decoupled <code class="font-mono" style="color:var(--gold-primary);">api.js</code> REST abstraction layer.
+              This prototype does NOT claim government certification, production judicial authority, or official forensic accreditation.
+            </p>
+          </div>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="cems-footer">
+        <div class="footer-disclaimer-box">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Demo Prototype</strong> — This application stores demonstration data locally in the browser. 
+            It is not intended for production court evidence handling, legal record management, or official chain-of-custody purposes.
+          </div>
+        </div>
+        <div class="footer-meta">
+          <span>Netlify Static Architecture</span>
+          <span class="demo-pill">Local Storage Mode</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

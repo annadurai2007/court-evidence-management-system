@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEMS - Immutable Audit Activity Trail</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="../css/print.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="cems-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="brand-info">
+          <div class="brand-title">CEMS <span>LEGAL</span></div>
+          <div class="brand-subtitle">Evidence &amp; Custody</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Core Management</div>
+        <a href="dashboard.html" class="nav-link">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="cases.html" class="nav-link">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Cases</span>
+          <span class="nav-badge" data-nav-count="cases">0</span>
+        </a>
+        <a href="evidence.html" class="nav-link">
+          <i class="fa-solid fa-box-archive"></i>
+          <span>Evidence Registry</span>
+          <span class="nav-badge" data-nav-count="evidence">0</span>
+        </a>
+        <a href="add-evidence.html" class="nav-link">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Evidence</span>
+        </a>
+
+        <div class="nav-section-title">Judicial Workflow</div>
+        <a href="custody.html" class="nav-link">
+          <i class="fa-solid fa-timeline"></i>
+          <span>Chain of Custody</span>
+        </a>
+        <a href="court-submission.html" class="nav-link">
+          <i class="fa-solid fa-building-columns"></i>
+          <span>Court Submission</span>
+          <span class="nav-badge" data-nav-count="submissions">0</span>
+        </a>
+        <a href="hearings.html" class="nav-link">
+          <i class="fa-solid fa-gavel"></i>
+          <span>Hearings</span>
+          <span class="nav-badge" data-nav-count="hearings">0</span>
+        </a>
+        <a href="documents.html" class="nav-link">
+          <i class="fa-solid fa-file-contract"></i>
+          <span>Case Documents</span>
+        </a>
+
+        <div class="nav-section-title">Integrity &amp; Auditing</div>
+        <a href="verification.html" class="nav-link">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Verification Lab</span>
+        </a>
+        <a href="reports.html" class="nav-link">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Reports &amp; Exports</span>
+        </a>
+        <a href="activity.html" class="nav-link active">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Activity Logs</span>
+        </a>
+
+        <div class="nav-section-title">Administration</div>
+        <a href="users.html" class="nav-link">
+          <i class="fa-solid fa-users"></i>
+          <span>Users &amp; Staff</span>
+        </a>
+        <a href="settings.html" class="nav-link">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">AD</div>
+          <div class="user-meta">
+            <div class="user-name">Loading...</div>
+            <div class="user-role">Evidence Officer</div>
+          </div>
+          <button class="btn-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="header-left">
+          <button class="btn-sidebar-toggle" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <a href="dashboard.html"><i class="fa-solid fa-house"></i></a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Activity Logs</span>
+          </div>
+        </div>
+
+        <div class="header-center">
+          <div class="global-search-trigger">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search cases, evidence, officers...</span>
+            <span class="search-shortcut">Ctrl+K</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-clock"><i class="fa-regular fa-clock"></i> <span>Loading...</span></div>
+          <div style="position:relative;">
+            <button class="header-action-btn" id="notif-toggle-btn" aria-label="Notifications">
+              <i class="fa-regular fa-bell"></i>
+              <span class="badge-dot" id="notif-unread-dot"></span>
+            </button>
+            <div class="notifications-dropdown" id="notifications-dropdown">
+              <div class="notification-header">
+                <h4>Notifications</h4>
+                <button class="btn-text-action" id="btn-mark-all-read">Mark all as read</button>
+              </div>
+              <div class="notification-list"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1><i class="fa-solid fa-clock-rotate-left" style="color:var(--gold-primary);"></i> Immutable Judicial Audit Trail</h1>
+            <p>Chronological security logs tracking user logins, case creation, forensic verification, and custody handovers.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary btn-sm" id="btn-export-activity">
+              <i class="fa-solid fa-file-csv"></i> Export Audit Trail
+            </button>
+            <button class="btn btn-danger btn-sm" id="btn-clear-activity">
+              <i class="fa-solid fa-trash-can"></i> Purge Demo Logs
+            </button>
+          </div>
+        </div>
+
+        <!-- SEARCH & MODULE FILTER -->
+        <div class="cems-card" style="margin-bottom:1.5rem;padding:1.25rem;">
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+            <div class="input-icon-wrap" style="flex:1;min-width:260px;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="activity-search-input" class="form-control" placeholder="Search by Action, User, Reference ID, or Details...">
+            </div>
+
+            <div style="display:flex;gap:10px;align-items:center;">
+              <select id="filter-activity-module" class="form-select" style="width:auto;">
+                <option value="All">All Functional Modules</option>
+                <option value="Authentication">Authentication</option>
+                <option value="Case Management">Case Management</option>
+                <option value="Evidence Registry">Evidence Registry</option>
+                <option value="Verification Lab">Verification Lab</option>
+                <option value="Chain of Custody">Chain of Custody</option>
+                <option value="Court Submission">Court Submission</option>
+                <option value="Hearing Management">Hearing Management</option>
+                <option value="Document Repository">Document Repository</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY TABLE -->
+        <div class="cems-card">
+          <div class="cems-card-header">
+            <div class="card-title-wrap">
+              <span id="activity-count-label" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);">
+                Showing audit log events
+              </span>
+            </div>
+            <div style="font-size:0.75rem;color:var(--text-dim);">
+              <i class="fa-solid fa-lock"></i> Append-Only Demo Ledger
+            </div>
+          </div>
+          <div class="cems-table-responsive">
+            <table class="cems-table table-card-mobile">
+              <thead>
+                <tr>
+                  <th>Log ID</th>
+                  <th>Timestamp</th>
+                  <th>Authorized User</th>
+                  <th>Action Taken</th>
+                  <th>Module</th>
+                  <th>Reference</th>
+                  <th>Event Details</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="activity-table-tbody">
+                <tr><td colspan="8" style="text-align:center;padding:2rem;">Loading activity log...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="cems-footer">
+        <div class="footer-disclaimer-box">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Demo Prototype</strong> — This application stores demonstration data locally in the browser. 
+            It is not intended for production court evidence handling, legal record management, or official chain-of-custody purposes.
+          </div>
+        </div>
+        <div class="footer-meta">
+          <span>Netlify Static Architecture</span>
+          <span class="demo-pill">Local Storage Mode</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/activity.js"></script>
+</body>
+</html>

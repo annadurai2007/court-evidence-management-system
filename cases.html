@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEMS - Case Management Registry</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="cems-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="brand-info">
+          <div class="brand-title">CEMS <span>LEGAL</span></div>
+          <div class="brand-subtitle">Evidence &amp; Custody</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Core Management</div>
+        <a href="dashboard.html" class="nav-link">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="cases.html" class="nav-link active">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Cases</span>
+          <span class="nav-badge" data-nav-count="cases">0</span>
+        </a>
+        <a href="evidence.html" class="nav-link">
+          <i class="fa-solid fa-box-archive"></i>
+          <span>Evidence Registry</span>
+          <span class="nav-badge" data-nav-count="evidence">0</span>
+        </a>
+        <a href="add-evidence.html" class="nav-link">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Evidence</span>
+        </a>
+
+        <div class="nav-section-title">Judicial Workflow</div>
+        <a href="custody.html" class="nav-link">
+          <i class="fa-solid fa-timeline"></i>
+          <span>Chain of Custody</span>
+        </a>
+        <a href="court-submission.html" class="nav-link">
+          <i class="fa-solid fa-building-columns"></i>
+          <span>Court Submission</span>
+          <span class="nav-badge" data-nav-count="submissions">0</span>
+        </a>
+        <a href="hearings.html" class="nav-link">
+          <i class="fa-solid fa-gavel"></i>
+          <span>Hearings</span>
+          <span class="nav-badge" data-nav-count="hearings">0</span>
+        </a>
+        <a href="documents.html" class="nav-link">
+          <i class="fa-solid fa-file-contract"></i>
+          <span>Case Documents</span>
+        </a>
+
+        <div class="nav-section-title">Integrity &amp; Auditing</div>
+        <a href="verification.html" class="nav-link">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Verification Lab</span>
+        </a>
+        <a href="reports.html" class="nav-link">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Reports &amp; Exports</span>
+        </a>
+        <a href="activity.html" class="nav-link">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Activity Logs</span>
+        </a>
+
+        <div class="nav-section-title">Administration</div>
+        <a href="users.html" class="nav-link">
+          <i class="fa-solid fa-users"></i>
+          <span>Users &amp; Staff</span>
+        </a>
+        <a href="settings.html" class="nav-link">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">AD</div>
+          <div class="user-meta">
+            <div class="user-name">Loading...</div>
+            <div class="user-role">Evidence Officer</div>
+          </div>
+          <button class="btn-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="header-left">
+          <button class="btn-sidebar-toggle" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <a href="dashboard.html"><i class="fa-solid fa-house"></i></a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Case Management</span>
+          </div>
+        </div>
+
+        <div class="header-center">
+          <div class="global-search-trigger">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search cases, evidence, officers...</span>
+            <span class="search-shortcut">Ctrl+K</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-clock"><i class="fa-regular fa-clock"></i> <span>Loading...</span></div>
+          <div style="position:relative;">
+            <button class="header-action-btn" id="notif-toggle-btn" aria-label="Notifications">
+              <i class="fa-regular fa-bell"></i>
+              <span class="badge-dot" id="notif-unread-dot"></span>
+            </button>
+            <div class="notifications-dropdown" id="notifications-dropdown">
+              <div class="notification-header">
+                <h4>Notifications</h4>
+                <button class="btn-text-action" id="btn-mark-all-read">Mark all as read</button>
+              </div>
+              <div class="notification-list"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1><i class="fa-solid fa-folder-open" style="color:var(--gold-primary);"></i> Judicial Case Registry</h1>
+            <p>Active and archived litigation records, presiding benches, and case evidentiary dockets.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openAddCaseModal()">
+              <i class="fa-solid fa-plus"></i> Register New Case File
+            </button>
+          </div>
+        </div>
+
+        <!-- FILTER & SEARCH BAR -->
+        <div class="cems-card" style="margin-bottom: 1.5rem; padding: 1.25rem;">
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+            <div class="input-icon-wrap" style="flex: 1; min-width: 260px;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="cases-search-input" class="form-control" placeholder="Search by Case Title, Number, Judge, Litigant...">
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+              <!-- Case Type -->
+              <select id="filter-case-type" class="form-select" style="width: auto;">
+                <option value="All">All Case Types</option>
+                <option value="Criminal">Criminal</option>
+                <option value="Civil">Civil</option>
+                <option value="Cyber Crime">Cyber Crime</option>
+                <option value="Property">Property</option>
+                <option value="Financial">Financial</option>
+                <option value="Family">Family</option>
+                <option value="Other">Other</option>
+              </select>
+
+              <!-- Status -->
+              <select id="filter-case-status" class="form-select" style="width: auto;">
+                <option value="All">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Under Investigation">Under Investigation</option>
+                <option value="Evidence Review">Evidence Review</option>
+                <option value="Hearing Scheduled">Hearing Scheduled</option>
+                <option value="Closed">Closed</option>
+                <option value="Archived">Archived</option>
+              </select>
+
+              <!-- Priority -->
+              <select id="filter-case-priority" class="form-select" style="width: auto;">
+                <option value="All">All Priorities</option>
+                <option value="Critical">Critical</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+
+              <!-- Sort -->
+              <select id="sort-cases" class="form-select" style="width: auto;">
+                <option value="newest">Sort: Newest First</option>
+                <option value="oldest">Sort: Oldest First</option>
+                <option value="priority">Sort: Highest Priority</option>
+                <option value="title">Sort: Case Title (A-Z)</option>
+              </select>
+
+              <button class="btn btn-secondary btn-sm" id="btn-reset-case-filters" title="Reset Filters">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CASES TABLE CARD -->
+        <div class="cems-card">
+          <div class="cems-card-header">
+            <div class="card-title-wrap">
+              <span id="cases-count-label" style="font-size: 0.88rem; font-weight: 600; color: var(--text-muted);">
+                Showing registered cases
+              </span>
+            </div>
+          </div>
+          <div class="cems-table-responsive">
+            <table class="cems-table">
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Title &amp; Number</th>
+                  <th>Court &amp; Judge</th>
+                  <th>Type</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Next Hearing</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="cases-table-tbody">
+                <tr><td colspan="8" style="text-align:center;padding:2rem;">Loading cases...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="cems-card-footer" id="cases-pagination"></div>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="cems-footer">
+        <div class="footer-disclaimer-box">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Demo Prototype</strong> — This application stores demonstration data locally in the browser. 
+            It is not intended for production court evidence handling, legal record management, or official chain-of-custody purposes.
+          </div>
+        </div>
+        <div class="footer-meta">
+          <span>Netlify Static Architecture</span>
+          <span class="demo-pill">Local Storage Mode</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT CASE MODAL -->
+  <div class="modal-backdrop" id="case-modal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <h3 id="modal-case-title">Register New Court Case File</h3>
+        <button class="modal-close" onclick="Utils.closeModal('case-modal')">&times;</button>
+      </div>
+      <form id="case-form">
+        <div class="modal-body">
+          <input type="hidden" id="is-edit-mode" value="false">
+          <div class="form-grid">
+            <div class="form-group col-4">
+              <label class="form-label required" for="case-id-input">Case ID</label>
+              <input type="text" id="case-id-input" class="form-control font-mono" required readonly>
+            </div>
+            <div class="form-group col-4">
+              <label class="form-label required" for="case-number-input">Case Docket Number</label>
+              <input type="text" id="case-number-input" class="form-control font-mono" placeholder="CRIM-8842/2026" required>
+            </div>
+            <div class="form-group col-4">
+              <label class="form-label required" for="case-type-select">Case Type</label>
+              <select id="case-type-select" class="form-select">
+                <option value="Criminal">Criminal</option>
+                <option value="Civil">Civil</option>
+                <option value="Cyber Crime">Cyber Crime</option>
+                <option value="Property">Property</option>
+                <option value="Financial">Financial</option>
+                <option value="Family">Family</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group col-12">
+              <label class="form-label required" for="case-title-input">Case Title / Legal Caption</label>
+              <input type="text" id="case-title-input" class="form-control" placeholder="State v. Apex Global Syndicate" required>
+            </div>
+
+            <div class="form-group col-6">
+              <label class="form-label required" for="court-name-input">Court Name</label>
+              <input type="text" id="court-name-input" class="form-control" placeholder="Metropolitan Financial Crimes Court" required>
+            </div>
+            <div class="form-group col-6">
+              <label class="form-label" for="court-location-input">Court Location / Room</label>
+              <input type="text" id="court-location-input" class="form-control" placeholder="Sector 4, Judicial Complex">
+            </div>
+
+            <div class="form-group col-6">
+              <label class="form-label" for="judge-name-input">Presiding Judge</label>
+              <input type="text" id="judge-name-input" class="form-control" placeholder="Hon. Justice Vikramaditya Roy">
+            </div>
+            <div class="form-group col-6">
+              <label class="form-label" for="investigating-officer-input">Investigating Officer</label>
+              <input type="text" id="investigating-officer-input" class="form-control" placeholder="Special Agent Sarah Jenkins">
+            </div>
+
+            <div class="form-group col-4">
+              <label class="form-label" for="petitioner-input">Petitioner / Complainant</label>
+              <input type="text" id="petitioner-input" class="form-control" placeholder="State Regulatory Commission">
+            </div>
+            <div class="form-group col-4">
+              <label class="form-label" for="respondent-input">Respondent / Accused</label>
+              <input type="text" id="respondent-input" class="form-control" placeholder="Apex Global Ltd.">
+            </div>
+            <div class="form-group col-4">
+              <label class="form-label" for="advocate-input">Counsel / Advocate</label>
+              <input type="text" id="advocate-input" class="form-control" placeholder="Elena Rostova, Sr. Advocate">
+            </div>
+
+            <div class="form-group col-4">
+              <label class="form-label" for="case-priority-select">Priority Level</label>
+              <select id="case-priority-select" class="form-select">
+                <option value="Critical">Critical</option>
+                <option value="High">High</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </div>
+            <div class="form-group col-4">
+              <label class="form-label" for="case-status-select">Current Status</label>
+              <select id="case-status-select" class="form-select">
+                <option value="Active">Active</option>
+                <option value="Under Investigation">Under Investigation</option>
+                <option value="Evidence Review">Evidence Review</option>
+                <option value="Hearing Scheduled">Hearing Scheduled</option>
+                <option value="Closed">Closed</option>
+                <option value="Archived">Archived</option>
+              </select>
+            </div>
+            <div class="form-group col-4">
+              <label class="form-label" for="case-filing-date">Filing Date</label>
+              <input type="date" id="case-filing-date" class="form-control">
+            </div>
+
+            <div class="form-group col-6">
+              <label class="form-label" for="case-hearing-date">Next Scheduled Hearing</label>
+              <input type="date" id="case-hearing-date" class="form-control">
+            </div>
+            <div class="form-group col-12">
+              <label class="form-label" for="case-description-input">Case Synopsis &amp; Charges</label>
+              <textarea id="case-description-input" class="form-textarea" placeholder="Summary of allegations, evidentiary scope, and preliminary investigation report details..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="Utils.closeModal('case-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Save Case Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/cases.js"></script>
+</body>
+</html>

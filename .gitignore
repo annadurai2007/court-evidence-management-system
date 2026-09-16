@@ -1,0 +1,30 @@
+# Environment & Secret Files
+.env
+*.env
+!.env.example
+backend/.env
+backend/*.env
+!backend/.env.example
+
+# Python Cache & Bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Backend Uploads
+backend/uploads/*
+!backend/uploads/evidence/.gitkeep
+!backend/uploads/documents/.gitkeep
+
+# IDEs & System Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log

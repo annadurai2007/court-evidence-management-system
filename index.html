@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEMS - Court Evidence Management System | Secure Evidence. Trusted Records.</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .landing-page-wrapper {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.07) 0%, rgba(13, 21, 39, 0.98) 60%, #080D1A 100%);
+      position: relative;
+    }
+
+    .landing-nav {
+      height: 76px;
+      padding: 0 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(13, 21, 39, 0.6);
+      backdrop-filter: blur(12px);
+    }
+
+    .landing-hero-grid {
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3.5rem 3rem;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: var(--border-radius-full);
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid var(--gold-border);
+      color: var(--gold-primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 580px;
+      margin-bottom: 2.25rem;
+    }
+
+    /* 3 Feature Highlight Cards */
+    .hero-features-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .feature-pill-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--border-radius-md);
+      padding: 1.1rem;
+      transition: all var(--transition-fast);
+    }
+    .feature-pill-card:hover {
+      border-color: var(--gold-border);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+      font-size: 1rem;
+    }
+
+    .feature-pill-card h4 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .feature-pill-card p {
+      font-size: 0.76rem;
+      color: var(--text-dim);
+      line-height: 1.45;
+    }
+
+    /* Login Card */
+    .landing-login-card {
+      background: var(--bg-surface-glass);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--border-radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+    }
+
+    .landing-login-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 4px;
+    }
+    .password-toggle-btn:hover {
+      color: var(--gold-primary);
+    }
+
+    .demo-access-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--border-radius-md);
+      padding: 1rem;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+    }
+
+    .persona-badge-btn {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--border-radius-sm);
+      padding: 5px 9px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .persona-badge-btn:hover {
+      border-color: var(--gold-primary);
+      color: var(--text-main);
+    }
+
+    @media (max-width: 1024px) {
+      .landing-nav { padding: 0 1.5rem; }
+      .landing-hero-grid {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.5rem;
+        gap: 2.5rem;
+      }
+      .hero-title { font-size: 2.4rem; }
+      .hero-features-list { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .landing-nav {
+        padding: 0.75rem 1rem;
+        height: auto;
+        min-height: 60px;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .landing-hero-grid {
+        padding: 1.5rem 1rem;
+        gap: 1.75rem;
+      }
+      .hero-title { font-size: 2rem; }
+      .hero-description { font-size: 0.95rem; margin-bottom: 1.5rem; }
+      .landing-login-card { padding: 1.5rem 1.25rem; }
+    }
+
+    @media (max-width: 480px) {
+      .landing-nav { padding: 0.5rem 0.75rem; }
+      .landing-nav .brand-subtitle { display: none; }
+      .landing-hero-grid { padding: 1.25rem 0.75rem; }
+      .hero-title { font-size: 1.65rem; }
+      .hero-tag { font-size: 0.68rem; padding: 3px 8px; }
+      .landing-login-card { padding: 1.25rem 0.85rem; }
+      .persona-badge-btn { width: 100%; text-align: center; }
+    }
+
+    @media (max-width: 360px) {
+      .landing-hero-grid { padding: 1rem 0.5rem; }
+      .landing-login-card { padding: 1rem 0.75rem; }
+      .hero-title { font-size: 1.45rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="landing-page-wrapper">
+    <!-- Top Navigation Bar -->
+    <header class="landing-nav">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="brand-icon">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </div>
+        <div>
+          <div class="brand-title" style="font-size:1.15rem;">CEMS <span>LEGAL</span></div>
+          <div class="brand-subtitle">Court Evidence Management System</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span class="demo-pill"><i class="fa-solid fa-shield-halved"></i> Academic Prototype</span>
+      </div>
+    </header>
+
+    <!-- Main Split Hero & Login Grid -->
+    <main class="landing-hero-grid">
+      <!-- Left Hero Column -->
+      <section>
+        <div class="hero-tag">
+          <i class="fa-solid fa-gavel"></i> Enterprise Legal Technology Platform
+        </div>
+
+        <h1 class="hero-title">
+          Secure Evidence.<br>
+          <span>Trusted Records.</span>
+        </h1>
+
+        <p class="hero-description">
+          A modern digital platform for organizing, verifying and tracking court evidence.
+          Ensuring cryptographic integrity and judicial chain-of-custody compliance from seizure through final trial admission.
+        </p>
+
+        <!-- 3 Feature Highlights (Phase 2 Requirement) -->
+        <div class="hero-features-list">
+          <div class="feature-pill-card">
+            <div class="feature-icon-wrap" style="background:rgba(56, 189, 248, 0.15);color:var(--accent-blue);">
+              <i class="fa-solid fa-box-archive"></i>
+            </div>
+            <h4>Evidence Management</h4>
+            <p>Master registry for digital files, CCTV video, forensic disk clones &amp; physical exhibits.</p>
+          </div>
+
+          <div class="feature-pill-card">
+            <div class="feature-icon-wrap" style="background:rgba(16, 185, 129, 0.15);color:var(--status-active-text);">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h4>Evidence Verification</h4>
+            <p>Real-time client-side SHA-256 cryptographic audits utilizing browser Web Crypto API.</p>
+          </div>
+
+          <div class="feature-pill-card">
+            <div class="feature-icon-wrap" style="background:rgba(245, 158, 11, 0.15);color:var(--gold-primary);">
+              <i class="fa-solid fa-timeline"></i>
+            </div>
+            <h4>Chain of Custody</h4>
+            <p>Immutable vertical audit timeline with automated sequence gap anomaly detection.</p>
+          </div>
+        </div>
+
+        <!-- System Architecture Attributes -->
+        <div style="display:flex;flex-wrap:wrap;gap:1.5rem;font-size:0.82rem;color:var(--text-dim);">
+          <div><i class="fa-solid fa-check" style="color:var(--status-active-text);"></i> 100% Client-Side Web Crypto</div>
+          <div><i class="fa-solid fa-check" style="color:var(--status-active-text);"></i> Zero Server Transmission</div>
+          <div><i class="fa-solid fa-check" style="color:var(--status-active-text);"></i> Netlify Ready Static Build</div>
+        </div>
+      </section>
+
+      <!-- Right Login Card Column -->
+      <section>
+        <div class="landing-login-card">
+          <div style="margin-bottom:1.5rem;border-bottom:1px solid var(--border-subtle);padding-bottom:1rem;">
+            <h2 style="font-size:1.35rem;font-weight:700;color:var(--text-main);">
+              Portal Authentication
+            </h2>
+            <p style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">
+              Access authorized judicial and forensic evidence registers
+            </p>
+          </div>
+
+          <form id="login-form">
+            <div class="form-group" style="margin-bottom:1.25rem;">
+              <label class="form-label" for="login-email">Email / Authorized User ID</label>
+              <div class="input-icon-wrap">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="login-email" class="form-control" placeholder="admin@cems.com" required autocomplete="username">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1.25rem;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <label class="form-label" for="login-password">Password</label>
+                <span style="font-size:0.75rem;color:var(--text-dim);">Default: admin123</span>
+              </div>
+              <div class="input-icon-wrap" style="position:relative;">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="login-password" class="form-control" style="padding-right:40px;" placeholder="••••••••" required autocomplete="current-password">
+                <button type="button" class="password-toggle-btn" id="btn-toggle-pwd" aria-label="Toggle password visibility">
+                  <i class="fa-solid fa-eye" id="pwd-icon"></i>
+                </button>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;font-size:0.84rem;">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-muted);">
+                <input type="checkbox" id="remember-me" style="accent-color:var(--gold-primary);">
+                <span>Remember Me</span>
+              </label>
+              <span style="color:var(--text-dim);font-size:0.75rem;">TLS 256-Bit</span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <button type="submit" id="btn-submit-login" class="btn btn-primary" style="width:100%;padding:0.85rem;font-size:0.95rem;">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Sign In to Judicial Dashboard</span>
+              </button>
+
+              <!-- Demo Access Button: Populates without auto-submitting (Phase 2 Requirement) -->
+              <button type="button" id="btn-demo-access" class="btn btn-secondary" style="width:100%;padding:0.75rem;font-size:0.88rem;">
+                <i class="fa-solid fa-key" style="color:var(--gold-primary);"></i>
+                <span>Demo Access (Fill Credentials)</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Fast Persona Switcher -->
+          <div class="demo-access-box">
+            <div style="font-weight:700;color:var(--gold-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+              <i class="fa-solid fa-id-card-clip"></i>
+              <span>Select Authorized Demo Persona:</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+              <button type="button" class="persona-badge-btn" onclick="fillPersona('admin@cems.com', 'admin123', 'Evidence Officer (Marcus Vance)')">
+                <strong>Evidence Officer</strong>
+              </button>
+              <button type="button" class="persona-badge-btn" onclick="fillPersona('sarah.cyber@cems.com', 'admin123', 'Investigator (Sarah Jenkins)')">
+                <strong>Investigator</strong>
+              </button>
+              <button type="button" class="persona-badge-btn" onclick="fillPersona('arthur.court@cems.com', 'admin123', 'Court Officer (Arthur Pendelton)')">
+                <strong>Court Officer</strong>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer Disclaimer -->
+    <footer class="cems-footer">
+      <div class="footer-disclaimer-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div>
+          <strong>Demo Prototype</strong> — Data is stored locally in the browser. This application is not intended for production court evidence handling, legal record management, or official chain-of-custody use.
+        </div>
+      </div>
+      <div class="footer-meta">
+        <span>Netlify Static Architecture</span>
+        <span class="demo-pill">Local Storage Mode</span>
+      </div>
+    </footer>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('login-form');
+      const emailInput = document.getElementById('login-email');
+      const passwordInput = document.getElementById('login-password');
+      const rememberCheckbox = document.getElementById('remember-me');
+      const togglePwdBtn = document.getElementById('btn-toggle-pwd');
+      const pwdIcon = document.getElementById('pwd-icon');
+      const submitBtn = document.getElementById('btn-submit-login');
+      const demoAccessBtn = document.getElementById('btn-demo-access');
+
+      // Autofill remembered email if stored
+      const remembered = localStorage.getItem('cems_remember_email');
+      if (remembered) {
+        emailInput.value = remembered;
+        rememberCheckbox.checked = true;
+      }
+
+      // Toggle password visibility
+      togglePwdBtn.addEventListener('click', () => {
+        const isText = passwordInput.type === 'text';
+        passwordInput.type = isText ? 'password' : 'text';
+        pwdIcon.className = isText ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+      });
+
+      // Demo Access: Populate demo credentials without auto-submitting
+      demoAccessBtn.addEventListener('click', () => {
+        emailInput.value = 'admin@cems.com';
+        passwordInput.value = 'admin123';
+        Utils.showToast('Demo credentials populated (admin@cems.com / admin123). Click "Sign In" to enter.', 'info', 'Credentials Loaded');
+      });
+
+      // Submit Login
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const remember = rememberCheckbox.checked;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...`;
+
+        const success = await Auth.login(email, password, remember);
+        if (!success) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Sign In to Judicial Dashboard`;
+        }
+      });
+    });
+
+    function fillPersona(email, pwd, label) {
+      document.getElementById('login-email').value = email;
+      document.getElementById('login-password').value = pwd;
+      Utils.showToast(`Populated credentials for ${label}. Click "Sign In" to proceed.`, 'info', 'Persona Selected');
+    }
+  </script>
+</body>
+</html>

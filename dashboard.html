@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEMS - Executive Legal Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="cems-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </div>
+        <div class="brand-info">
+          <div class="brand-title">CEMS <span>LEGAL</span></div>
+          <div class="brand-subtitle">Evidence &amp; Custody</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Core Management</div>
+        <a href="dashboard.html" class="nav-link active">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="cases.html" class="nav-link">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Cases</span>
+          <span class="nav-badge" data-nav-count="cases">0</span>
+        </a>
+        <a href="evidence.html" class="nav-link">
+          <i class="fa-solid fa-box-archive"></i>
+          <span>Evidence Registry</span>
+          <span class="nav-badge" data-nav-count="evidence">0</span>
+        </a>
+        <a href="add-evidence.html" class="nav-link">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Evidence</span>
+        </a>
+
+        <div class="nav-section-title">Judicial Workflow</div>
+        <a href="custody.html" class="nav-link">
+          <i class="fa-solid fa-timeline"></i>
+          <span>Chain of Custody</span>
+        </a>
+        <a href="court-submission.html" class="nav-link">
+          <i class="fa-solid fa-building-columns"></i>
+          <span>Court Submission</span>
+          <span class="nav-badge" data-nav-count="submissions">0</span>
+        </a>
+        <a href="hearings.html" class="nav-link">
+          <i class="fa-solid fa-gavel"></i>
+          <span>Hearings</span>
+          <span class="nav-badge" data-nav-count="hearings">0</span>
+        </a>
+        <a href="documents.html" class="nav-link">
+          <i class="fa-solid fa-file-contract"></i>
+          <span>Case Documents</span>
+        </a>
+
+        <div class="nav-section-title">Integrity &amp; Auditing</div>
+        <a href="verification.html" class="nav-link">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Verification Lab</span>
+        </a>
+        <a href="reports.html" class="nav-link">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Reports &amp; Exports</span>
+        </a>
+        <a href="activity.html" class="nav-link">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Activity Logs</span>
+        </a>
+
+        <div class="nav-section-title">Administration</div>
+        <a href="users.html" class="nav-link">
+          <i class="fa-solid fa-users"></i>
+          <span>Users &amp; Staff</span>
+        </a>
+        <a href="settings.html" class="nav-link">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">AD</div>
+          <div class="user-meta">
+            <div class="user-name">Loading...</div>
+            <div class="user-role">Evidence Officer</div>
+          </div>
+          <button class="btn-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+      <!-- TOP HEADER -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="btn-sidebar-toggle" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <a href="dashboard.html"><i class="fa-solid fa-house"></i></a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Executive Dashboard</span>
+          </div>
+        </div>
+
+        <div class="header-center">
+          <div class="global-search-trigger">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search cases, evidence ID, officers, court dockets...</span>
+            <span class="search-shortcut">Ctrl+K</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-clock">
+            <i class="fa-regular fa-clock"></i>
+            <span>Loading...</span>
+          </div>
+
+          <div style="position:relative;">
+            <button class="header-action-btn" id="notif-toggle-btn" aria-label="View notifications">
+              <i class="fa-regular fa-bell"></i>
+              <span class="badge-dot" id="notif-unread-dot"></span>
+            </button>
+            <!-- Dropdown -->
+            <div class="notifications-dropdown" id="notifications-dropdown">
+              <div class="notification-header">
+                <h4>Notifications</h4>
+                <button class="btn-text-action" id="btn-mark-all-read">Mark all as read</button>
+              </div>
+              <div class="notification-list"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE CONTENT -->
+      <main class="page-content">
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1>
+              <i class="fa-solid fa-shield-halved" style="color:var(--gold-primary);"></i>
+              Court Evidence Management Platform
+            </h1>
+            <p>Digital repository, cryptographic chain-of-custody tracking &amp; judicial hearing dockets.</p>
+          </div>
+          <div class="page-actions">
+            <a href="cases.html" class="btn btn-secondary">
+              <i class="fa-solid fa-folder-open"></i> View All Cases
+            </a>
+            <a href="add-evidence.html" class="btn btn-primary">
+              <i class="fa-solid fa-plus"></i> Ingest New Evidence
+            </a>
+          </div>
+        </div>
+
+        <!-- TOP KPI METRICS GRID (6 CARDS) -->
+        <div class="stats-grid-top">
+          <!-- Total Cases -->
+          <div class="stat-card total-cases">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-folder-closed"></i>
+            </div>
+            <div class="stat-details">
+              <div class="stat-value" id="stat-total-cases">0</div>
+              <div class="stat-label">Total Cases</div>
+              <div class="stat-trend"><i class="fa-solid fa-arrow-up" style="color:var(--status-active-text);"></i> Active Dockets</div>
+            </div>
+          </div>
+
+          <!-- Total Evidence -->
+          <div class="stat-card total-evidence">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-box-archive"></i>
+            </div>
+            <div class="stat-details">
+              <div class="stat-value" id="stat-total-evidence">0</div>
+              <div class="stat-label">Total Evidence</div>
+              <div class="stat-trend"><i class="fa-solid fa-fingerprint" style="color:var(--accent-blue);"></i> Hashed Records</div>
+            </div>
+          </div>
+
+          <!-- Pending Verification -->
+          <div class="stat-card pending-verification">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-hourglass-half"></i>
+            </div>
+            <div class="stat-details">
+              <div class="stat-value" id="stat-pending-verification">0</div>
+              <div class="stat-label">Pending Verification</div>
+              <div class="stat-trend"><i class="fa-solid fa-clock" style="color:var(--gold-primary);"></i> Lab Audit Queue</div>
+            </div>
+          </div>
+
+          <!-- Court Submitted -->
+          <div class="stat-card court-submitted">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div class="stat-details">
+              <div class="stat-value" id="stat-court-submitted">0</div>
+              <div class="stat-label">Court Submitted</div>
+              <div class="stat-trend"><i class="fa-solid fa-paper-plane" style="color:#C084FC;"></i> Transferred to Bench</div>
+            </div>
+          </div>
+
+          <!-- Admitted Evidence -->
+          <div class="stat-card admitted-evidence">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-certificate"></i>
+            </div>
+            <div class="stat-details">
+              <div class="stat-value" id="stat-admitted-evidence">0</div>
+              <div class="stat-label">Admitted Evidence</div>
+              <div class="stat-trend"><i class="fa-solid fa-check" style="color:var(--status-active-text);"></i> Judicial Exhibits</div>
+            </div>
+          </div>
+
+          <!-- Rejected Evidence -->
+          <div class="stat-card rejected-evidence">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="stat-details">
+              <div class="stat-value" id="stat-rejected-evidence">0</div>
+              <div class="stat-label">Rejected Evidence</div>
+              <div class="stat-trend"><i class="fa-solid fa-ban" style="color:var(--status-danger-text);"></i> Inadmissible / Mismatch</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECONDARY FEATURE CARDS (4 MINI CARDS) -->
+        <div class="secondary-cards-grid">
+          <div class="feature-mini-card">
+            <div class="mini-head">
+              <span>Upcoming Hearings</span>
+              <i class="fa-solid fa-gavel"></i>
+            </div>
+            <div class="mini-body" id="sec-upcoming-hearings">Loading...</div>
+            <div class="mini-footer">Across Metropolitan &amp; District Benches</div>
+          </div>
+
+          <div class="feature-mini-card">
+            <div class="mini-head">
+              <span>Evidence Awaiting Review</span>
+              <i class="fa-solid fa-microscope"></i>
+            </div>
+            <div class="mini-body" id="sec-awaiting-review">Loading...</div>
+            <div class="mini-footer">Assigned to State Forensic Laboratories</div>
+          </div>
+
+          <div class="feature-mini-card">
+            <div class="mini-head">
+              <span>Recent Submissions</span>
+              <i class="fa-solid fa-share-nodes"></i>
+            </div>
+            <div class="mini-body" id="sec-recent-submissions">Loading...</div>
+            <div class="mini-footer">Court clerks verified deposition dockets</div>
+          </div>
+
+          <div class="feature-mini-card">
+            <div class="mini-head">
+              <span>Custody Sequence Alerts</span>
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <div class="mini-body" id="sec-custody-alerts">Loading...</div>
+            <div class="mini-footer">Audited for unbroken transfer integrity</div>
+          </div>
+        </div>
+
+        <!-- COURT STATUS PANEL -->
+        <div class="cems-card" style="margin-bottom: 1.75rem;">
+          <div class="cems-card-header">
+            <div class="card-title-wrap">
+              <h3><i class="fa-solid fa-server" style="color:var(--gold-primary);"></i> Court System Status (Demo Indicators)</h3>
+              <p>Operational health monitoring across judicial evidence modules</p>
+            </div>
+            <span class="badge badge-active"><span class="badge-dot"></span> All Subsystems Online</span>
+          </div>
+          <div class="cems-card-body">
+            <div class="status-panel-grid" id="court-status-panel"></div>
+          </div>
+        </div>
+
+        <!-- CHARTS SECTION (4 CHARTS) -->
+        <div class="charts-grid">
+          <!-- Chart 1: Evidence Status (Doughnut) -->
+          <div class="cems-card chart-card-sm">
+            <div class="cems-card-header">
+              <div class="card-title-wrap">
+                <h3><i class="fa-solid fa-chart-pie" style="color:var(--gold-primary);"></i> Evidence Status</h3>
+                <p>Distribution of judicial admissibility states</p>
+              </div>
+            </div>
+            <div class="cems-card-body">
+              <div class="chart-container">
+                <canvas id="chart-evidence-status"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 2: Cases by Type (Bar) -->
+          <div class="cems-card chart-card-sm">
+            <div class="cems-card-header">
+              <div class="card-title-wrap">
+                <h3><i class="fa-solid fa-chart-column" style="color:var(--accent-blue);"></i> Cases by Type</h3>
+                <p>Criminal, Civil, Cyber Crime, Property, Financial</p>
+              </div>
+            </div>
+            <div class="cems-card-body">
+              <div class="chart-container">
+                <canvas id="chart-cases-type"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 3: Evidence Submitted by Month (Line) -->
+          <div class="cems-card chart-card-sm">
+            <div class="cems-card-header">
+              <div class="card-title-wrap">
+                <h3><i class="fa-solid fa-chart-line" style="color:var(--status-active-text);"></i> Ingestion Volume</h3>
+                <p>Monthly cryptographic ingestions (2026)</p>
+              </div>
+            </div>
+            <div class="cems-card-body">
+              <div class="chart-container">
+                <canvas id="chart-evidence-monthly"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 4: Hearing Statistics (Polar Area) -->
+          <div class="cems-card chart-card-lg">
+            <div class="cems-card-header">
+              <div class="card-title-wrap">
+                <h3><i class="fa-solid fa-gavel" style="color:var(--gold-primary);"></i> Hearing Statistics</h3>
+                <p>Breakdown across Trial, Preliminary, Evidence, and Bail hearings</p>
+              </div>
+            </div>
+            <div class="cems-card-body">
+              <div class="chart-container">
+                <canvas id="chart-hearing-stats"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT CASES & RECENT EVIDENCE SECTION -->
+        <div class="dashboard-tables-grid">
+          <!-- Recent Cases -->
+          <div class="cems-card dash-col-cases">
+            <div class="cems-card-header">
+              <div class="card-title-wrap">
+                <h3><i class="fa-solid fa-folder-open" style="color:var(--gold-primary);"></i> Recent Active Cases</h3>
+                <p>Latest matters entered into judicial docket</p>
+              </div>
+              <a href="cases.html" class="btn btn-secondary btn-sm">View All</a>
+            </div>
+            <div class="cems-table-responsive">
+              <table class="cems-table">
+                <thead>
+                  <tr>
+                    <th>Case ID</th>
+                    <th>Case Title</th>
+                    <th>Court</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Next Hearing</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-cases-tbody">
+                  <tr><td colspan="7" style="text-align:center;padding:2rem;">Loading cases...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent Evidence -->
+          <div class="cems-card dash-col-evidence">
+            <div class="cems-card-header">
+              <div class="card-title-wrap">
+                <h3><i class="fa-solid fa-box-archive" style="color:var(--accent-blue);"></i> Recent Evidence</h3>
+                <p>Latest cryptographic ingestions</p>
+              </div>
+              <a href="evidence.html" class="btn btn-secondary btn-sm">View All</a>
+            </div>
+            <div class="cems-table-responsive">
+              <table class="cems-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Case</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Integrity</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-evidence-tbody">
+                  <tr><td colspan="7" style="text-align:center;padding:2rem;">Loading evidence...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT AUDIT ACTIVITY FEED -->
+        <div class="cems-card">
+          <div class="cems-card-header">
+            <div class="card-title-wrap">
+              <h3><i class="fa-solid fa-clock-rotate-left" style="color:var(--gold-primary);"></i> Real-Time Audit Activity Feed</h3>
+              <p>Cryptographic events, evidence registrations &amp; custody transitions</p>
+            </div>
+            <a href="activity.html" class="btn btn-secondary btn-sm">View Complete Log</a>
+          </div>
+          <div class="cems-card-body">
+            <div class="activity-feed-list" id="dashboard-activity-list">
+              <p style="color:var(--text-dim);">Loading activity events...</p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="cems-footer">
+        <div class="footer-disclaimer-box">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Demo Prototype</strong> — This application stores demonstration data locally in the browser. 
+            It is not intended for production court evidence handling, legal record management, or official chain-of-custody purposes.
+          </div>
+        </div>
+        <div class="footer-meta">
+          <span>Netlify Static Architecture</span>
+          <span class="demo-pill">Local Storage Mode</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

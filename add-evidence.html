@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEMS - Ingest New Evidence</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="cems-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="brand-info">
+          <div class="brand-title">CEMS <span>LEGAL</span></div>
+          <div class="brand-subtitle">Evidence &amp; Custody</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Core Management</div>
+        <a href="dashboard.html" class="nav-link">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="cases.html" class="nav-link">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Cases</span>
+          <span class="nav-badge" data-nav-count="cases">0</span>
+        </a>
+        <a href="evidence.html" class="nav-link">
+          <i class="fa-solid fa-box-archive"></i>
+          <span>Evidence Registry</span>
+          <span class="nav-badge" data-nav-count="evidence">0</span>
+        </a>
+        <a href="add-evidence.html" class="nav-link active">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Evidence</span>
+        </a>
+
+        <div class="nav-section-title">Judicial Workflow</div>
+        <a href="custody.html" class="nav-link">
+          <i class="fa-solid fa-timeline"></i>
+          <span>Chain of Custody</span>
+        </a>
+        <a href="court-submission.html" class="nav-link">
+          <i class="fa-solid fa-building-columns"></i>
+          <span>Court Submission</span>
+          <span class="nav-badge" data-nav-count="submissions">0</span>
+        </a>
+        <a href="hearings.html" class="nav-link">
+          <i class="fa-solid fa-gavel"></i>
+          <span>Hearings</span>
+          <span class="nav-badge" data-nav-count="hearings">0</span>
+        </a>
+        <a href="documents.html" class="nav-link">
+          <i class="fa-solid fa-file-contract"></i>
+          <span>Case Documents</span>
+        </a>
+
+        <div class="nav-section-title">Integrity &amp; Auditing</div>
+        <a href="verification.html" class="nav-link">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Verification Lab</span>
+        </a>
+        <a href="reports.html" class="nav-link">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Reports &amp; Exports</span>
+        </a>
+        <a href="activity.html" class="nav-link">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Activity Logs</span>
+        </a>
+
+        <div class="nav-section-title">Administration</div>
+        <a href="users.html" class="nav-link">
+          <i class="fa-solid fa-users"></i>
+          <span>Users &amp; Staff</span>
+        </a>
+        <a href="settings.html" class="nav-link">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">AD</div>
+          <div class="user-meta">
+            <div class="user-name">Loading...</div>
+            <div class="user-role">Evidence Officer</div>
+          </div>
+          <button class="btn-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="header-left">
+          <button class="btn-sidebar-toggle" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <a href="dashboard.html"><i class="fa-solid fa-house"></i></a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="evidence.html">Evidence</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Ingest Evidence</span>
+          </div>
+        </div>
+
+        <div class="header-center">
+          <div class="global-search-trigger">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search cases, evidence, officers...</span>
+            <span class="search-shortcut">Ctrl+K</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-clock"><i class="fa-regular fa-clock"></i> <span>Loading...</span></div>
+          <div style="position:relative;">
+            <button class="header-action-btn" id="notif-toggle-btn" aria-label="Notifications">
+              <i class="fa-regular fa-bell"></i>
+              <span class="badge-dot" id="notif-unread-dot"></span>
+            </button>
+            <div class="notifications-dropdown" id="notifications-dropdown">
+              <div class="notification-header">
+                <h4>Notifications</h4>
+                <button class="btn-text-action" id="btn-mark-all-read">Mark all as read</button>
+              </div>
+              <div class="notification-list"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1><i class="fa-solid fa-file-circle-plus" style="color:var(--gold-primary);"></i> Ingest &amp; Hash Legal Evidence</h1>
+            <p>Generate authentic cryptographic SHA-256 signatures in browser memory &amp; record initial custody node.</p>
+          </div>
+          <div class="page-actions">
+            <span class="demo-pill"><i class="fa-solid fa-hard-drive"></i> Demo Local Storage Mode</span>
+          </div>
+        </div>
+
+        <form id="add-evidence-form">
+          <div class="form-grid">
+            <!-- LEFT COLUMN: FILE DROPZONE & CRYPTO HASH -->
+            <div class="col-5">
+              <div class="cems-card" style="padding:1.5rem;margin-bottom:1.5rem;">
+                <div class="card-title-wrap" style="margin-bottom:1rem;">
+                  <h3><i class="fa-solid fa-fingerprint" style="color:var(--gold-primary);"></i> In-Browser Cryptographic Hashing</h3>
+                  <p>Select any local file to compute SHA-256 via Web Crypto API (no upload to server)</p>
+                </div>
+
+                <!-- Dropzone -->
+                <div class="cems-dropzone" id="evidence-dropzone">
+                  <input type="file" id="evidence-file-input" style="display:none;">
+                  <div class="dropzone-icon">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                  </div>
+                  <div class="dropzone-title">Drop Evidence File Here</div>
+                  <div class="dropzone-text">or click to browse local file system</div>
+                  <div style="font-size:0.72rem;color:var(--text-dim);margin-top:8px;">
+                    Supports: Documents, Audio, CCTV Video, Disk Dumps, Images
+                  </div>
+                </div>
+
+                <div id="file-meta-display"></div>
+                <div id="computed-hash-display"></div>
+              </div>
+
+              <!-- Storage notice -->
+              <div class="cems-card" style="padding:1.25rem;background:rgba(245, 158, 11, 0.05);border-color:var(--gold-border);">
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                  <i class="fa-solid fa-shield-halved" style="color:var(--gold-primary);font-size:1.2rem;margin-top:2px;"></i>
+                  <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">
+                    <strong style="color:var(--text-main);">Zero-Server Privacy Guarantee:</strong>
+                    Files are digested entirely inside browser memory utilizing <code class="font-mono" style="color:var(--gold-primary);">crypto.subtle.digest()</code>. Only the cryptographic hash checksum and deposition metadata are stored in local storage.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: METADATA FORM -->
+            <div class="col-7">
+              <div class="cems-card" style="padding:1.5rem;">
+                <div class="card-title-wrap" style="margin-bottom:1.25rem;">
+                  <h3><i class="fa-solid fa-clipboard-list" style="color:var(--accent-blue);"></i> Evidentiary Deposition Metadata</h3>
+                  <p>Official chain-of-custody intake registration details</p>
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-group col-6">
+                    <label class="form-label required" for="evidence-id-input">Evidence Identifier (Auto)</label>
+                    <input type="text" id="evidence-id-input" class="form-control font-mono" required readonly>
+                  </div>
+                  <div class="form-group col-6">
+                    <label class="form-label required" for="case-id-select">Associated Court Case</label>
+                    <select id="case-id-select" class="form-select" required></select>
+                  </div>
+
+                  <div class="form-group col-12">
+                    <label class="form-label required" for="evidence-name-input">Evidence Name / Exhibit Label</label>
+                    <input type="text" id="evidence-name-input" class="form-control" placeholder="e.g. Server Room Backup Disk Dump" required>
+                  </div>
+
+                  <div class="form-group col-6">
+                    <label class="form-label required" for="evidence-type-select">Evidence Type</label>
+                    <select id="evidence-type-select" class="form-select">
+                      <option value="Digital Document">Digital Document</option>
+                      <option value="Physical Document">Physical Document</option>
+                      <option value="CCTV Footage">CCTV Footage</option>
+                      <option value="Mobile Data">Mobile Data</option>
+                      <option value="Computer Data">Computer Data</option>
+                      <option value="Financial Record">Financial Record</option>
+                      <option value="Forensic Report">Forensic Report</option>
+                      <option value="Image">Image</option>
+                      <option value="Video">Video</option>
+                      <option value="Audio">Audio</option>
+                      <option value="Email">Email</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-6">
+                    <label class="form-label" for="court-status-select">Initial Court Status</label>
+                    <select id="court-status-select" class="form-select">
+                      <option value="Registered" selected>Registered</option>
+                      <option value="Under Review">Under Review</option>
+                      <option value="Submitted">Submitted to Court</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-6">
+                    <label class="form-label" for="collected-by-input">Seized / Collected By (Officer)</label>
+                    <input type="text" id="collected-by-input" class="form-control" placeholder="Special Agent Sarah Jenkins">
+                  </div>
+                  <div class="form-group col-6">
+                    <label class="form-label" for="evidence-source-input">Acquisition Source / Warrant</label>
+                    <input type="text" id="evidence-source-input" class="form-control" placeholder="Warrant #CW-2026-44">
+                  </div>
+
+                  <div class="form-group col-4">
+                    <label class="form-label" for="collection-date-input">Collection Date</label>
+                    <input type="date" id="collection-date-input" class="form-control">
+                  </div>
+                  <div class="form-group col-4">
+                    <label class="form-label" for="collection-time-input">Collection Time</label>
+                    <input type="time" id="collection-time-input" class="form-control">
+                  </div>
+                  <div class="form-group col-4">
+                    <label class="form-label" for="collection-location-input">Collection Location</label>
+                    <input type="text" id="collection-location-input" class="form-control" placeholder="Sector 14 Data Center">
+                  </div>
+
+                  <!-- File properties -->
+                  <div class="form-group col-4">
+                    <label class="form-label" for="file-name-input">Target File Name</label>
+                    <input type="text" id="file-name-input" class="form-control" placeholder="raw_audit_dump.dd">
+                  </div>
+                  <div class="form-group col-4">
+                    <label class="form-label" for="file-size-input">File Size</label>
+                    <input type="text" id="file-size-input" class="form-control" placeholder="450 MB">
+                  </div>
+                  <div class="form-group col-4">
+                    <label class="form-label" for="hash-algo-display">Algorithm</label>
+                    <input type="text" id="hash-algo-display" class="form-control font-mono" value="SHA-256" readonly>
+                  </div>
+
+                  <div class="form-group col-12">
+                    <label class="form-label" for="hash-value-input">Computed SHA-256 Checksum (Hex)</label>
+                    <input type="text" id="hash-value-input" class="form-control font-mono" placeholder="Will be populated automatically when file is selected above">
+                  </div>
+
+                  <div class="form-group col-12">
+                    <label class="form-label" for="evidence-description-input">Evidentiary Scope &amp; Description</label>
+                    <textarea id="evidence-description-input" class="form-textarea" placeholder="Provide forensic details, recovery conditions, hardware serial numbers or tamper bag seals..."></textarea>
+                  </div>
+
+                  <div class="form-group col-12">
+                    <label class="form-label" for="evidence-notes-input">Custodial Vault Notes</label>
+                    <input type="text" id="evidence-notes-input" class="form-control" placeholder="Locker B-14, sealed in tamper-evident container">
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border-subtle);">
+                  <a href="evidence.html" class="btn btn-secondary">Cancel</a>
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-lock"></i> Register Evidence &amp; Initiate Custody
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="cems-footer">
+        <div class="footer-disclaimer-box">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Demo Prototype</strong> — This application stores demonstration data locally in the browser. 
+            It is not intended for production court evidence handling, legal record management, or official chain-of-custody purposes.
+          </div>
+        </div>
+        <div class="footer-meta">
+          <span>Netlify Static Architecture</span>
+          <span class="demo-pill">Local Storage Mode</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/add-evidence.js"></script>
+</body>
+</html>

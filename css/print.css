@@ -1,0 +1,153 @@
+/* ==========================================================================
+   COURT EVIDENCE MANAGEMENT SYSTEM (CEMS) - PRINT STYLESHEET
+   Clean, Professional Court Report & Chain of Custody Printing
+   ========================================================================== */
+
+@media print {
+  /* Reset background and text for paper */
+  *, *::before, *::after {
+    background: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Hide interactive / web chrome elements */
+  .cems-sidebar,
+  .top-header,
+  .cems-footer,
+  .btn,
+  .page-actions,
+  .notifications-dropdown,
+  .modal-backdrop,
+  .global-search-trigger,
+  .table-row-actions,
+  .no-print {
+    display: none !important;
+  }
+
+  .main-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .page-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Official Court Header */
+  .print-header {
+    display: block !important;
+    text-align: center;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+
+  .print-header h2 {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 16pt;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .print-header p {
+    font-size: 9pt;
+    color: #555555 !important;
+  }
+
+  /* Table styling */
+  .cems-table-responsive {
+    overflow: visible !important;
+  }
+
+  .cems-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto;
+  }
+
+  .cems-table tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .cems-table th {
+    background-color: #EEEEEE !important;
+    color: #000000 !important;
+    font-weight: bold;
+    border: 1px solid #CCCCCC !important;
+    padding: 6px 8px !important;
+    font-size: 9pt !important;
+  }
+
+  .cems-table td {
+    border: 1px solid #DDDDDD !important;
+    padding: 6px 8px !important;
+    font-size: 9pt !important;
+  }
+
+  .badge {
+    border: 1px solid #888888 !important;
+    color: #000000 !important;
+    background: transparent !important;
+    font-size: 8pt !important;
+  }
+
+  .hash-pill {
+    font-family: monospace !important;
+    font-size: 8pt !important;
+    border: 1px solid #CCCCCC !important;
+    padding: 2px 4px !important;
+  }
+
+  /* Print Signatures Block */
+  .print-signatures {
+    display: flex !important;
+    justify-content: space-between;
+    margin-top: 50px;
+    page-break-inside: avoid;
+  }
+
+  .sig-block {
+    width: 220px;
+    border-top: 1px solid #000000;
+    text-align: center;
+    padding-top: 8px;
+    font-size: 9pt;
+  }
+
+  /* Custody Timeline for Print */
+  .custody-timeline {
+    padding-left: 20px !important;
+  }
+
+  .custody-timeline::before {
+    background: #000000 !important;
+    width: 1px !important;
+  }
+
+  .custody-node {
+    border: 2px solid #000000 !important;
+    background: #FFFFFF !important;
+  }
+
+  .custody-card {
+    border: 1px solid #CCCCCC !important;
+    background: #FFFFFF !important;
+    page-break-inside: avoid;
+    margin-bottom: 12px !important;
+    padding: 8px !important;
+  }
+}
