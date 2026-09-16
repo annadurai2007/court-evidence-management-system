@@ -18,7 +18,7 @@ const API_CONFIG = {
            (localStorage.getItem('cems_api_url')) ||
            (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
              ? 'http://127.0.0.1:5000/api' 
-             : 'https://YOUR-BACKEND-API-DOMAIN.com/api'),
+             : 'https://cems-backend-0tk3.onrender.com/api'),
   timeoutMs: 4000,
   isOnline: null,
   enableDemoFallback: (window.CEMS_CONFIG ? window.CEMS_CONFIG.enableDemoFallback : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))

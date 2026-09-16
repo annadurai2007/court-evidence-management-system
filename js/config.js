@@ -13,8 +13,8 @@
 
 (function() {
   const defaultLocalApi = 'http://127.0.0.1:5000/api';
-  // Replace with your actual deployed backend URL (e.g. Render, Railway, AWS, DigitalOcean)
-  const defaultProductionApi = 'https://YOUR-BACKEND-API-DOMAIN.com/api';
+  // Configured deployed backend URL on Render
+  const defaultProductionApi = 'https://cems-backend-0tk3.onrender.com/api';
 
   const isLocalhost = Boolean(
     window.location.hostname === 'localhost' ||
