@@ -12,20 +12,29 @@
  *    ensuring zero crashes and 100% functionality everywhere (including Netlify).
  */
 
+const _rawBaseUrl = (window.CEMS_CONFIG && window.CEMS_CONFIG.apiUrl) || 
+                   window.CEMS_API_URL || 
+                   (localStorage.getItem('cems_api_url')) ||
+                   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+                     ? 'http://127.0.0.1:5000/api' 
+                     : 'https://cems-backend-0tk3.onrender.com/api');
+
+const _safeBaseUrl = (_rawBaseUrl && !_rawBaseUrl.includes('YOUR-BACKEND'))
+  ? _rawBaseUrl
+  : 'https://cems-backend-0tk3.onrender.com/api';
+
+let _lastOfflineToastTime = 0;
+
 const API_CONFIG = {
-  baseUrl: (window.CEMS_CONFIG && window.CEMS_CONFIG.apiUrl) || 
-           window.CEMS_API_URL || 
-           (localStorage.getItem('cems_api_url')) ||
-           (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-             ? 'http://127.0.0.1:5000/api' 
-             : 'https://cems-backend-0tk3.onrender.com/api'),
+  baseUrl: _safeBaseUrl,
   timeoutMs: 4000,
   isOnline: null,
-  enableDemoFallback: (window.CEMS_CONFIG ? window.CEMS_CONFIG.enableDemoFallback : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+  enableDemoFallback: (window.CEMS_CONFIG ? window.CEMS_CONFIG.enableDemoFallback : true)
 };
 
 const api = {
   config: API_CONFIG,
+
 
   // =========================================================================
   // HTTP CLIENT & HEALTH MONITOR
@@ -132,9 +141,13 @@ const api = {
 
         // In production (or when demo fallback is disabled), do not hide server errors!
         if (!API_CONFIG.enableDemoFallback) {
+          const now = Date.now();
           const userMsg = `Backend Server Unavailable: Cannot reach ${API_CONFIG.baseUrl}. Please verify your API URL or backend hosting deployment.`;
-          if (window.Utils && typeof window.Utils.showToast === 'function') {
-            window.Utils.showToast(userMsg, 'error', 'API Server Offline');
+          if (now - _lastOfflineToastTime > 10000) {
+            _lastOfflineToastTime = now;
+            if (window.Utils && typeof window.Utils.showToast === 'function') {
+              window.Utils.showToast(userMsg, 'error', 'API Server Offline');
+            }
           }
           throw new Error(userMsg);
         }

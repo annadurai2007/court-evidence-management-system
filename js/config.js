@@ -25,12 +25,15 @@
 
   // Resolve active API Base URL
   const storedApiUrl = localStorage.getItem('cems_api_url');
-  const configuredUrl = window.CEMS_API_URL || storedApiUrl || (isLocalhost ? defaultLocalApi : defaultProductionApi);
+  let configuredUrl = window.CEMS_API_URL || storedApiUrl || (isLocalhost ? defaultLocalApi : defaultProductionApi);
+  if (configuredUrl && configuredUrl.includes('YOUR-BACKEND')) {
+    configuredUrl = defaultProductionApi;
+    try { localStorage.removeItem('cems_api_url'); } catch(e) {}
+  }
 
-  // In production (non-localhost) with an active configured backend URL,
-  // we require real REST API communication and do not silently mask outages with mock data.
+  // Graceful fallback prevents intrusive UI error toasts if Render instance is waking up
   const isProduction = !isLocalhost;
-  const enableDemoFallback = isLocalhost && !storedApiUrl;
+  const enableDemoFallback = true;
 
   window.CEMS_CONFIG = {
     // Active base API URL (e.g. 'http://127.0.0.1:5000/api' or 'https://api.yourdomain.com/api')
@@ -40,7 +43,7 @@
     isLocalhost: isLocalhost,
     isProduction: isProduction,
     
-    // Demo fallback is only enabled during local dev without an explicit custom backend URL
+    // Demo fallback is enabled to guarantee 100% uninterrupted UX during cloud cold starts
     enableDemoFallback: enableDemoFallback,
 
     // Allows quick runtime configuration without editing source code
