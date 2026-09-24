@@ -59,9 +59,13 @@ function initDropzone() {
 
   if (!dropzone || !fileInput) return;
 
+  fileInput.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
   dropzone.addEventListener('click', (e) => {
-    // Avoid double triggering if click is on remove button or preview controls
-    if (e.target.closest('#btn-remove-selected-file') || e.target.closest('video') || e.target.closest('audio')) {
+    if (e.target === fileInput || e.target.closest('#evidence-file-input')) return;
+    if (e.target.closest('#btn-remove-selected-file') || e.target.closest('video') || e.target.closest('audio') || e.target.closest('button')) {
       return;
     }
     fileInput.click();
@@ -82,6 +86,7 @@ function initDropzone() {
   });
 
   dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
     const files = e.dataTransfer.files;
     if (files.length) {
       processSelectedFile(files[0]);
@@ -122,16 +127,23 @@ async function processSelectedFile(file) {
     }
   }
 
-  // Read file as Data URL for instant live preview and persistence
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    selectedFileDataUrl = e.target.result;
-    renderDropzonePreview(file, selectedFileDataUrl);
-  };
-  reader.onerror = () => {
-    console.warn('Failed to read file as Data URL');
-  };
-  reader.readAsDataURL(file);
+  // Instant zero-copy preview (avoids browser memory crash on large video/audio)
+  try {
+    const previewUrl = URL.createObjectURL(file);
+    renderDropzonePreview(file, previewUrl);
+  } catch (err) {
+    console.warn('Preview creation error:', err);
+  }
+
+  // Only read DataURL if file is small (<= 2MB)
+  selectedFileDataUrl = '';
+  if (file.size <= 2 * 1024 * 1024) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      selectedFileDataUrl = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
 
   if (hashDisplay) {
     hashDisplay.innerHTML = `
@@ -356,9 +368,10 @@ async function handleAddEvidenceSubmit(e) {
 
   try {
     // 1. Persist raw media in High-Capacity IndexedDB Vault
-    if (selectedFileDataUrl && window.MediaStorage) {
+    if (selectedFile && window.MediaStorage) {
       await MediaStorage.saveMedia(evidenceId, {
-        dataUrl: selectedFileDataUrl,
+        blob: selectedFile,
+        dataUrl: selectedFileDataUrl || '',
         fileName: finalFileName,
         fileType: payload.fileType,
         fileSize: finalFileSize
@@ -369,9 +382,10 @@ async function handleAddEvidenceSubmit(e) {
     const result = await api.createEvidence(payload, selectedFile);
     const savedId = (result && (result.evidenceId || result.id)) || evidenceId;
 
-    if (selectedFileDataUrl && window.MediaStorage && savedId !== evidenceId) {
+    if (selectedFile && window.MediaStorage && savedId !== evidenceId) {
       await MediaStorage.saveMedia(savedId, {
-        dataUrl: selectedFileDataUrl,
+        blob: selectedFile,
+        dataUrl: selectedFileDataUrl || '',
         fileName: finalFileName,
         fileType: payload.fileType,
         fileSize: finalFileSize

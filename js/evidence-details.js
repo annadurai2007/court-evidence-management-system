@@ -28,8 +28,12 @@ async function loadEvidenceProfile(evidenceId) {
     if (window.MediaStorage) {
       try {
         const storedMedia = await MediaStorage.getMedia(evidenceId);
-        if (storedMedia && storedMedia.dataUrl) {
-          currentEvidence.fileDataUrl = storedMedia.dataUrl;
+        if (storedMedia) {
+          if (storedMedia.blob) {
+            currentEvidence.fileDataUrl = URL.createObjectURL(storedMedia.blob);
+          } else if (storedMedia.dataUrl) {
+            currentEvidence.fileDataUrl = storedMedia.dataUrl;
+          }
           if (storedMedia.fileType) currentEvidence.fileType = storedMedia.fileType;
           if (storedMedia.fileName) currentEvidence.fileName = storedMedia.fileName;
         }
