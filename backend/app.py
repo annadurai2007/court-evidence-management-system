@@ -5,7 +5,7 @@ Flask REST API Backend Application Entrypoint
 
 import os
 from pathlib import Path
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 from config import Config
@@ -74,14 +74,36 @@ def create_app(config_class=Config):
             return error_response("File directory not found.", 404)
         return send_from_directory(str(target_dir), filename)
 
-    # Root route
+    ROOT_DIR = Path(__file__).resolve().parent.parent
+
+    # Root route: Serves frontend index.html, or JSON if specifically requested
     @app.route("/", methods=["GET"])
     def root():
+        accept_header = request.headers.get("Accept", "")
+        if "application/json" in accept_header and "text/html" not in accept_header:
+            return jsonify({
+                "name": "Court Evidence Management System (CEMS) API",
+                "documentation": "/api/health",
+                "status": "running"
+            })
+        index_file = ROOT_DIR / "index.html"
+        if index_file.exists():
+            return send_from_directory(str(ROOT_DIR), "index.html")
         return jsonify({
             "name": "Court Evidence Management System (CEMS) API",
             "documentation": "/api/health",
             "status": "running"
         })
+
+    # Serve frontend pages & assets (.html, .css, .js, .svg, etc.) directly from Flask
+    @app.route("/<path:filename>", methods=["GET"])
+    def serve_frontend_page(filename):
+        if filename.startswith("api/"):
+            return error_response("Endpoint not found.", 404)
+        target = ROOT_DIR / filename
+        if target.exists() and target.is_file():
+            return send_from_directory(str(target.parent), target.name)
+        return error_response(f"File '{filename}' not found.", 404)
 
     # Error Handlers
     @app.errorhandler(400)
