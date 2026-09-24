@@ -206,7 +206,9 @@ const api = {
     const users = StorageManager.getData(StorageKeys.USERS) || [];
     const validUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
-    if ((email === 'admin@cems.com' && password === 'admin123') || (validUser && password === 'admin123')) {
+    const isPasswordCorrect = validUser && (validUser.password ? validUser.password === password : password === 'admin123');
+
+    if ((email === 'admin@cems.com' && password === 'admin123') || isPasswordCorrect) {
       const authUser = validUser || {
         userId: 'USR-003',
         name: 'Inspector Marcus Vance',
@@ -223,11 +225,59 @@ const api = {
 
       this._setToken(session.token);
       StorageManager.saveData(StorageKeys.AUTH, session);
-      Utils.logActivity('User Login', 'Authentication', authUser.userId, 'Success', `Demo session created for ${authUser.name}`);
+      Utils.logActivity('User Login', 'Authentication', authUser.userId, 'Success', `Session created for ${authUser.name}`);
       return this._simulateNetwork({ success: true, user: session });
     }
 
-    return this._simulateNetwork(null, 'Invalid email or password. Use demo credentials: admin@cems.com / admin123');
+    return this._simulateNetwork(null, 'Invalid email or password.');
+  },
+
+  async register(userData) {
+    const { name, email, password, role, department } = userData;
+
+    // 1. Try Flask REST API
+    try {
+      const res = await this._fetch('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ name, email, password, role, department })
+      });
+
+      if (res && res.success && res.data) {
+        return { success: true, user: res.data };
+      }
+    } catch (apiErr) {
+      if (API_CONFIG.isOnline) {
+        throw apiErr;
+      }
+    }
+
+    // 2. Fallback to LocalStorage
+    const users = StorageManager.getData(StorageKeys.USERS) || [];
+    const existing = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (existing) {
+      return this._simulateNetwork(null, 'A user with this email address already exists in the system.');
+    }
+
+    const userId = `USR-${String(users.length + 1).padStart(3, '0')}`;
+    const newUser = {
+      id: users.length + 1,
+      userId: userId,
+      name: name,
+      email: email,
+      password: password,
+      role: role || 'Court Officer',
+      department: department || 'Judicial Division',
+      status: 'Active',
+      casesAssigned: 0,
+      lastLogin: new Date().toLocaleString(),
+      createdAt: new Date().toISOString()
+    };
+
+    users.push(newUser);
+    StorageManager.saveData(StorageKeys.USERS, users);
+    Utils.logActivity('User Registration', 'Authentication', userId, 'Success', `Official account created for ${name} (${role})`);
+
+    return this._simulateNetwork({ success: true, user: newUser });
   },
 
   async logout() {

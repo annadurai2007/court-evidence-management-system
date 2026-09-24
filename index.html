@@ -191,6 +191,60 @@
       color: var(--text-main);
     }
 
+    /* Auth Mode Tabs & Register Form */
+    .auth-tab-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: rgba(13, 21, 39, 0.7);
+      padding: 5px;
+      border-radius: var(--border-radius-md);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 1.5rem;
+    }
+    .auth-tab-btn {
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--border-radius-sm);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+      font-family: inherit;
+    }
+    .auth-tab-btn.active {
+      background: var(--bg-surface);
+      color: var(--gold-primary);
+      border-color: var(--gold-border);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+    .auth-tab-btn:hover:not(.active) {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .auth-switch-prompt {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+    .auth-switch-prompt a {
+      color: var(--gold-primary);
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 4px;
+      cursor: pointer;
+    }
+    .auth-switch-prompt a:hover {
+      text-decoration: underline;
+    }
+
     @media (max-width: 1024px) {
       .landing-nav { padding: 0 1.5rem; }
       .landing-hero-grid {
@@ -312,77 +366,180 @@
       <!-- Right Login Card Column -->
       <section>
         <div class="landing-login-card">
-          <div style="margin-bottom:1.5rem;border-bottom:1px solid var(--border-subtle);padding-bottom:1rem;">
-            <h2 style="font-size:1.35rem;font-weight:700;color:var(--text-main);">
+          <div style="margin-bottom:1.25rem;border-bottom:1px solid var(--border-subtle);padding-bottom:1rem;">
+            <h2 id="auth-card-title" style="font-size:1.35rem;font-weight:700;color:var(--text-main);">
               Portal Authentication
             </h2>
-            <p style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">
+            <p id="auth-card-subtitle" style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">
               Access authorized judicial and forensic evidence registers
             </p>
           </div>
 
-          <form id="login-form">
-            <div class="form-group" style="margin-bottom:1.25rem;">
-              <label class="form-label" for="login-email">Email / Authorized User ID</label>
-              <div class="input-icon-wrap">
-                <i class="fa-solid fa-envelope"></i>
-                <input type="email" id="login-email" class="form-control" placeholder="admin@cems.com" required autocomplete="username">
-              </div>
-            </div>
+          <!-- Dual Tab Switcher -->
+          <div class="auth-tab-group" role="tablist">
+            <button type="button" class="auth-tab-btn active" id="tab-btn-signin" role="tab" aria-selected="true">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              <span>Sign In</span>
+            </button>
+            <button type="button" class="auth-tab-btn" id="tab-btn-signup" role="tab" aria-selected="false">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>Create Account</span>
+            </button>
+          </div>
 
-            <div class="form-group" style="margin-bottom:1.25rem;">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <label class="form-label" for="login-password">Password</label>
-                <span style="font-size:0.75rem;color:var(--text-dim);">Default: admin123</span>
+          <!-- View 1: Sign In -->
+          <div id="auth-view-signin">
+            <form id="login-form">
+              <div class="form-group" style="margin-bottom:1.25rem;">
+                <label class="form-label" for="login-email">Email / Authorized User ID</label>
+                <div class="input-icon-wrap">
+                  <i class="fa-solid fa-envelope"></i>
+                  <input type="email" id="login-email" class="form-control" placeholder="admin@cems.com" required autocomplete="username">
+                </div>
               </div>
-              <div class="input-icon-wrap" style="position:relative;">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="login-password" class="form-control" style="padding-right:40px;" placeholder="••••••••" required autocomplete="current-password">
-                <button type="button" class="password-toggle-btn" id="btn-toggle-pwd" aria-label="Toggle password visibility">
-                  <i class="fa-solid fa-eye" id="pwd-icon"></i>
+
+              <div class="form-group" style="margin-bottom:1.25rem;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <label class="form-label" for="login-password">Password</label>
+                  <span style="font-size:0.75rem;color:var(--text-dim);">Default: admin123</span>
+                </div>
+                <div class="input-icon-wrap" style="position:relative;">
+                  <i class="fa-solid fa-lock"></i>
+                  <input type="password" id="login-password" class="form-control" style="padding-right:40px;" placeholder="••••••••" required autocomplete="current-password">
+                  <button type="button" class="password-toggle-btn" id="btn-toggle-pwd" aria-label="Toggle password visibility">
+                    <i class="fa-solid fa-eye" id="pwd-icon"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;font-size:0.84rem;">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-muted);">
+                  <input type="checkbox" id="remember-me" style="accent-color:var(--gold-primary);">
+                  <span>Remember Me</span>
+                </label>
+                <span style="color:var(--text-dim);font-size:0.75rem;">TLS 256-Bit</span>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <button type="submit" id="btn-submit-login" class="btn btn-primary" style="width:100%;padding:0.85rem;font-size:0.95rem;">
+                  <i class="fa-solid fa-right-to-bracket"></i>
+                  <span>Sign In to Judicial Dashboard</span>
+                </button>
+
+                <!-- Demo Access Button: Populates without auto-submitting (Phase 2 Requirement) -->
+                <button type="button" id="btn-demo-access" class="btn btn-secondary" style="width:100%;padding:0.75rem;font-size:0.88rem;">
+                  <i class="fa-solid fa-key" style="color:var(--gold-primary);"></i>
+                  <span>Demo Access (Fill Credentials)</span>
+                </button>
+              </div>
+
+              <div class="auth-switch-prompt">
+                New officer or staff? <a href="#" id="link-switch-to-signup">Create an Account</a>
+              </div>
+            </form>
+
+            <!-- Fast Persona Switcher -->
+            <div class="demo-access-box">
+              <div style="font-weight:700;color:var(--gold-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+                <i class="fa-solid fa-id-card-clip"></i>
+                <span>Select Authorized Demo Persona:</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+                <button type="button" class="persona-badge-btn" onclick="fillPersona('admin@cems.com', 'admin123', 'Evidence Officer (Marcus Vance)')">
+                  <strong>Evidence Officer</strong>
+                </button>
+                <button type="button" class="persona-badge-btn" onclick="fillPersona('sarah.cyber@cems.com', 'admin123', 'Investigator (Sarah Jenkins)')">
+                  <strong>Investigator</strong>
+                </button>
+                <button type="button" class="persona-badge-btn" onclick="fillPersona('arthur.court@cems.com', 'admin123', 'Court Officer (Arthur Pendelton)')">
+                  <strong>Court Officer</strong>
                 </button>
               </div>
             </div>
+          </div>
 
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;font-size:0.84rem;">
-              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-muted);">
-                <input type="checkbox" id="remember-me" style="accent-color:var(--gold-primary);">
-                <span>Remember Me</span>
-              </label>
-              <span style="color:var(--text-dim);font-size:0.75rem;">TLS 256-Bit</span>
-            </div>
+          <!-- View 2: Create Account / Registration -->
+          <div id="auth-view-signup" style="display: none;">
+            <form id="register-form">
+              <div class="form-group" style="margin-bottom:1.1rem;">
+                <label class="form-label" for="reg-name">Full Official Name</label>
+                <div class="input-icon-wrap">
+                  <i class="fa-solid fa-user-shield"></i>
+                  <input type="text" id="reg-name" class="form-control" placeholder="e.g. Detective K. Ramanathan" required autocomplete="name">
+                </div>
+              </div>
 
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <button type="submit" id="btn-submit-login" class="btn btn-primary" style="width:100%;padding:0.85rem;font-size:0.95rem;">
-                <i class="fa-solid fa-right-to-bracket"></i>
-                <span>Sign In to Judicial Dashboard</span>
+              <div class="form-group" style="margin-bottom:1.1rem;">
+                <label class="form-label" for="reg-email">Official Email (Username)</label>
+                <div class="input-icon-wrap">
+                  <i class="fa-solid fa-envelope"></i>
+                  <input type="email" id="reg-email" class="form-control" placeholder="officer@cems.com" required autocomplete="username">
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="reg-role">Designated Role</label>
+                  <div class="input-icon-wrap">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <select id="reg-role" class="form-control" style="background:var(--bg-primary);cursor:pointer;" required>
+                      <option value="Evidence Officer" selected>Evidence Officer</option>
+                      <option value="Investigator">Investigator</option>
+                      <option value="Court Officer">Court Officer</option>
+                      <option value="Forensic Analyst">Forensic Analyst</option>
+                      <option value="Legal Clerk">Legal Clerk</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg-dept">Department</label>
+                  <div class="input-icon-wrap">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <select id="reg-dept" class="form-control" style="background:var(--bg-primary);cursor:pointer;" required>
+                      <option value="Central Evidence Vault & Repository" selected>Central Vault</option>
+                      <option value="Cyber Crime Investigation Unit">Cyber Unit</option>
+                      <option value="Forensic Ballistics & DNA Lab">Forensics Lab</option>
+                      <option value="High Court Judicial Division">Judicial Div</option>
+                      <option value="Public Prosecutor Bureau">Prosecutor</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.35rem;">
+                <div class="form-group">
+                  <label class="form-label" for="reg-password">Password</label>
+                  <div class="input-icon-wrap" style="position:relative;">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="reg-password" class="form-control" style="padding-right:36px;" placeholder="Min 6 chars" minlength="6" required autocomplete="new-password">
+                    <button type="button" class="password-toggle-btn" id="btn-toggle-reg-pwd" aria-label="Toggle password visibility">
+                      <i class="fa-solid fa-eye" id="reg-pwd-icon"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg-confirm-password">Confirm Password</label>
+                  <div class="input-icon-wrap" style="position:relative;">
+                    <i class="fa-solid fa-shield-check"></i>
+                    <input type="password" id="reg-confirm-password" class="form-control" style="padding-right:36px;" placeholder="Re-enter password" minlength="6" required autocomplete="new-password">
+                    <button type="button" class="password-toggle-btn" id="btn-toggle-reg-cpwd" aria-label="Toggle confirm password visibility">
+                      <i class="fa-solid fa-eye" id="reg-cpwd-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" id="btn-submit-register" class="btn btn-primary" style="width:100%;padding:0.85rem;font-size:0.95rem;">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Create Official Account</span>
               </button>
 
-              <!-- Demo Access Button: Populates without auto-submitting (Phase 2 Requirement) -->
-              <button type="button" id="btn-demo-access" class="btn btn-secondary" style="width:100%;padding:0.75rem;font-size:0.88rem;">
-                <i class="fa-solid fa-key" style="color:var(--gold-primary);"></i>
-                <span>Demo Access (Fill Credentials)</span>
-              </button>
-            </div>
-          </form>
-
-          <!-- Fast Persona Switcher -->
-          <div class="demo-access-box">
-            <div style="font-weight:700;color:var(--gold-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
-              <i class="fa-solid fa-id-card-clip"></i>
-              <span>Select Authorized Demo Persona:</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
-              <button type="button" class="persona-badge-btn" onclick="fillPersona('admin@cems.com', 'admin123', 'Evidence Officer (Marcus Vance)')">
-                <strong>Evidence Officer</strong>
-              </button>
-              <button type="button" class="persona-badge-btn" onclick="fillPersona('sarah.cyber@cems.com', 'admin123', 'Investigator (Sarah Jenkins)')">
-                <strong>Investigator</strong>
-              </button>
-              <button type="button" class="persona-badge-btn" onclick="fillPersona('arthur.court@cems.com', 'admin123', 'Court Officer (Arthur Pendelton)')">
-                <strong>Court Officer</strong>
-              </button>
-            </div>
+              <div class="auth-switch-prompt">
+                Already registered? <a href="#" id="link-switch-to-signin">Sign In to your account</a>
+              </div>
+            </form>
           </div>
         </div>
       </section>
@@ -413,7 +570,18 @@
   <script src="js/auth.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('login-form');
+      // Views & Tabs
+      const tabBtnSignIn = document.getElementById('tab-btn-signin');
+      const tabBtnSignUp = document.getElementById('tab-btn-signup');
+      const viewSignIn = document.getElementById('auth-view-signin');
+      const viewSignUp = document.getElementById('auth-view-signup');
+      const cardTitle = document.getElementById('auth-card-title');
+      const cardSubtitle = document.getElementById('auth-card-subtitle');
+      const linkSwitchToSignUp = document.getElementById('link-switch-to-signup');
+      const linkSwitchToSignIn = document.getElementById('link-switch-to-signin');
+
+      // Login Form Elements
+      const loginForm = document.getElementById('login-form');
       const emailInput = document.getElementById('login-email');
       const passwordInput = document.getElementById('login-password');
       const rememberCheckbox = document.getElementById('remember-me');
@@ -422,6 +590,60 @@
       const submitBtn = document.getElementById('btn-submit-login');
       const demoAccessBtn = document.getElementById('btn-demo-access');
 
+      // Registration Form Elements
+      const regForm = document.getElementById('register-form');
+      const regNameInput = document.getElementById('reg-name');
+      const regEmailInput = document.getElementById('reg-email');
+      const regRoleInput = document.getElementById('reg-role');
+      const regDeptInput = document.getElementById('reg-dept');
+      const regPasswordInput = document.getElementById('reg-password');
+      const regConfirmPasswordInput = document.getElementById('reg-confirm-password');
+      const btnToggleRegPwd = document.getElementById('btn-toggle-reg-pwd');
+      const regPwdIcon = document.getElementById('reg-pwd-icon');
+      const btnToggleRegCpwd = document.getElementById('btn-toggle-reg-cpwd');
+      const regCpwdIcon = document.getElementById('reg-cpwd-icon');
+      const btnSubmitRegister = document.getElementById('btn-submit-register');
+
+      // Mode Switch Handler
+      function switchAuthMode(mode) {
+        if (mode === 'signup') {
+          tabBtnSignUp.classList.add('active');
+          tabBtnSignIn.classList.remove('active');
+          tabBtnSignUp.setAttribute('aria-selected', 'true');
+          tabBtnSignIn.setAttribute('aria-selected', 'false');
+          viewSignUp.style.display = 'block';
+          viewSignIn.style.display = 'none';
+          cardTitle.textContent = 'Officer Self-Registration';
+          cardSubtitle.textContent = 'Create credentials for authorized court & forensic personnel';
+          regNameInput.focus();
+        } else {
+          tabBtnSignIn.classList.add('active');
+          tabBtnSignUp.classList.remove('active');
+          tabBtnSignIn.setAttribute('aria-selected', 'true');
+          tabBtnSignUp.setAttribute('aria-selected', 'false');
+          viewSignIn.style.display = 'block';
+          viewSignUp.style.display = 'none';
+          cardTitle.textContent = 'Portal Authentication';
+          cardSubtitle.textContent = 'Access authorized judicial and forensic evidence registers';
+          emailInput.focus();
+        }
+      }
+
+      tabBtnSignIn.addEventListener('click', () => switchAuthMode('signin'));
+      tabBtnSignUp.addEventListener('click', () => switchAuthMode('signup'));
+      if (linkSwitchToSignUp) {
+        linkSwitchToSignUp.addEventListener('click', (e) => {
+          e.preventDefault();
+          switchAuthMode('signup');
+        });
+      }
+      if (linkSwitchToSignIn) {
+        linkSwitchToSignIn.addEventListener('click', (e) => {
+          e.preventDefault();
+          switchAuthMode('signin');
+        });
+      }
+
       // Autofill remembered email if stored
       const remembered = localStorage.getItem('cems_remember_email');
       if (remembered) {
@@ -429,22 +651,39 @@
         rememberCheckbox.checked = true;
       }
 
-      // Toggle password visibility
+      // Toggle password visibility (Login)
       togglePwdBtn.addEventListener('click', () => {
         const isText = passwordInput.type === 'text';
         passwordInput.type = isText ? 'password' : 'text';
         pwdIcon.className = isText ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
       });
 
+      // Toggle password visibility (Register)
+      if (btnToggleRegPwd) {
+        btnToggleRegPwd.addEventListener('click', () => {
+          const isText = regPasswordInput.type === 'text';
+          regPasswordInput.type = isText ? 'password' : 'text';
+          regPwdIcon.className = isText ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+        });
+      }
+      if (btnToggleRegCpwd) {
+        btnToggleRegCpwd.addEventListener('click', () => {
+          const isText = regConfirmPasswordInput.type === 'text';
+          regConfirmPasswordInput.type = isText ? 'password' : 'text';
+          regCpwdIcon.className = isText ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+        });
+      }
+
       // Demo Access: Populate demo credentials without auto-submitting
       demoAccessBtn.addEventListener('click', () => {
+        switchAuthMode('signin');
         emailInput.value = 'admin@cems.com';
         passwordInput.value = 'admin123';
         Utils.showToast('Demo credentials populated (admin@cems.com / admin123). Click "Sign In" to enter.', 'info', 'Credentials Loaded');
       });
 
       // Submit Login
-      form.addEventListener('submit', async (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = emailInput.value.trim();
         const password = passwordInput.value;
@@ -457,6 +696,38 @@
         if (!success) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Sign In to Judicial Dashboard`;
+        }
+      });
+
+      // Submit Registration
+      regForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = regNameInput.value.trim();
+        const email = regEmailInput.value.trim();
+        const role = regRoleInput.value;
+        const dept = regDeptInput.value;
+        const password = regPasswordInput.value;
+        const confirmPassword = regConfirmPasswordInput.value;
+
+        if (password !== confirmPassword) {
+          Utils.showToast('Passwords do not match. Please verify your entries.', 'warning', 'Validation Error');
+          regConfirmPasswordInput.focus();
+          return;
+        }
+
+        if (password.length < 6) {
+          Utils.showToast('Password must contain at least 6 characters.', 'warning', 'Security Policy');
+          regPasswordInput.focus();
+          return;
+        }
+
+        btnSubmitRegister.disabled = true;
+        btnSubmitRegister.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Creating Official Account...`;
+
+        const success = await Auth.register(name, email, password, role, dept);
+        if (!success) {
+          btnSubmitRegister.disabled = false;
+          btnSubmitRegister.innerHTML = `<i class="fa-solid fa-user-plus"></i> Create Official Account`;
         }
       });
     });

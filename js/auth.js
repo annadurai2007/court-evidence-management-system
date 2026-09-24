@@ -49,6 +49,25 @@ const Auth = {
   },
 
   /**
+   * Register function
+   */
+  async register(name, email, password, role, department) {
+    try {
+      const result = await api.register({ name, email, password, role, department });
+      if (result && result.success) {
+        Utils.showToast(`Account successfully created for ${name}! Signing you in...`, 'success', 'Registration Complete');
+        
+        // Auto-login the newly registered user
+        const loginRes = await this.login(email, password, false);
+        return loginRes;
+      }
+    } catch (err) {
+      Utils.showToast(err.message || 'Unable to register official account', 'error', 'Registration Failed');
+      return false;
+    }
+  },
+
+  /**
    * Logout function (Phase 2 requirement)
    */
   async logout() {
@@ -129,6 +148,7 @@ const Auth = {
 // Global exports for requirements
 window.Auth = Auth;
 window.login = (e, p, r) => Auth.login(e, p, r);
+window.register = (n, e, p, r, d) => Auth.register(n, e, p, r, d);
 window.logout = () => Auth.logout();
 window.isAuthenticated = () => Auth.isAuthenticated();
 window.getCurrentUser = () => Auth.getCurrentUser();
