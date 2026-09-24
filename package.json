@@ -1,0 +1,19 @@
+{
+  "name": "court-evidence-management-system",
+  "version": "2.0.0",
+  "description": "Court Evidence Management System (CEMS) - LegalTech Judicial Portal",
+  "scripts": {
+    "start": "python run.py",
+    "dev": "python run.py",
+    "backend": "python backend/app.py",
+    "test": "cd backend && python test_api.py"
+  },
+  "keywords": [
+    "cems",
+    "evidence-management",
+    "legaltech",
+    "court-evidence"
+  ],
+  "author": "annadurai2007",
+  "license": "ISC"
+}
