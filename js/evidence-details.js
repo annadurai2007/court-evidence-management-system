@@ -38,11 +38,11 @@ async function loadEvidenceProfile(evidenceId) {
       }
     }
 
-    renderEvidenceHeader(currentEvidence);
-    renderIntegrityCard(currentEvidence);
-    await renderEvidenceMedia(currentEvidence);
-    renderEvidenceMetadata(currentEvidence);
-    await renderCustodySnapshot(evidenceId);
+    try { renderEvidenceHeader(currentEvidence); } catch(e) { console.error('Header render error:', e); }
+    try { renderIntegrityCard(currentEvidence); } catch(e) { console.error('Integrity render error:', e); }
+    try { await renderEvidenceMedia(currentEvidence); } catch(e) { console.error('Media render error:', e); }
+    try { renderEvidenceMetadata(currentEvidence); } catch(e) { console.error('Metadata render error:', e); }
+    try { await renderCustodySnapshot(evidenceId); } catch(e) { console.error('Custody render error:', e); }
 
   } catch (err) {
     console.error('Error loading evidence profile:', err);
@@ -204,16 +204,16 @@ async function renderEvidenceMedia(e) {
     mediaBodyHtml = `
       <div style="background:radial-gradient(circle at center, #0e1726 0%, #030712 100%);padding:1.5rem;border-radius:10px;border:1px solid var(--border-medium);text-align:center;position:relative;">
         <div style="position:relative;display:inline-block;max-width:100%;">
-          <img id="evidence-display-photo" src="${mediaSrc}" alt="${e.evidenceName}" style="max-height:480px;max-width:100%;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.7);cursor:zoom-in;transition:transform 0.2s ease;border:1px solid rgba(255,255,255,0.1);" onclick="openMediaLightbox('${mediaSrc}', '${Utils.escapeHtml(e.evidenceName)}', 'image')" />
+          <img id="evidence-display-photo" src="${mediaSrc}" alt="Evidence Photo" style="max-height:480px;max-width:100%;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.7);cursor:zoom-in;transition:transform 0.2s ease;border:1px solid rgba(255,255,255,0.1);" />
           <div style="position:absolute;bottom:12px;right:12px;background:rgba(2,6,23,0.85);backdrop-filter:blur(6px);padding:4px 10px;border-radius:6px;font-size:0.75rem;color:var(--gold-primary);font-weight:700;border:1px solid var(--gold-border);pointer-events:none;">
             <i class="fa-solid fa-fingerprint"></i> SHA-256 Protected
           </div>
         </div>
         <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:1.25rem;flex-wrap:wrap;">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="openMediaLightbox('${mediaSrc}', '${Utils.escapeHtml(e.evidenceName)}', 'image')">
+          <button type="button" id="btn-photo-inspect" class="btn btn-secondary btn-sm">
             <i class="fa-solid fa-expand"></i> Inspect &amp; Zoom
           </button>
-          <button type="button" class="btn btn-primary btn-sm" onclick="downloadEvidenceAsset('${mediaSrc}', '${e.fileName || 'evidence_photo.png'}')">
+          <button type="button" id="btn-photo-download" class="btn btn-primary btn-sm">
             <i class="fa-solid fa-download"></i> Download Photo (${e.fileSize || 'Original'})
           </button>
           <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('attach-media-input').click()">
@@ -404,6 +404,27 @@ async function renderEvidenceMedia(e) {
       ${mediaBodyHtml}
     </div>
   `;
+
+  // Bind photo inspect & download actions if present
+  const photoImg = document.getElementById('evidence-display-photo');
+  const inspectBtn = document.getElementById('btn-photo-inspect');
+  const downloadBtn = document.getElementById('btn-photo-download');
+
+  if (photoImg) {
+    photoImg.addEventListener('click', () => {
+      openMediaLightbox(mediaSrc, e.evidenceName || 'Evidence Photo', 'image');
+    });
+  }
+  if (inspectBtn) {
+    inspectBtn.addEventListener('click', () => {
+      openMediaLightbox(mediaSrc, e.evidenceName || 'Evidence Photo', 'image');
+    });
+  }
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      downloadEvidenceAsset(mediaSrc, e.fileName || 'evidence_photo.png');
+    });
+  }
 
   // Bind attach / replace file listener
   initAttachFileInput(e);
