@@ -184,6 +184,9 @@
         <!-- EVIDENCE INTEGRITY CARD -->
         <div id="evidence-integrity-card" style="margin-bottom: 1.5rem;"></div>
 
+        <!-- EVIDENTIARY MEDIA & DIGITAL ASSET VIEWER -->
+        <div id="evidence-media-viewer-card" class="cems-card" style="margin-bottom: 1.5rem;"></div>
+
         <!-- PROFILE DETAILS & CUSTODY SNAPSHOT -->
         <div class="form-grid">
           <!-- Left: Detailed Metadata -->
@@ -284,6 +287,32 @@
           <span class="demo-pill">Local Storage Mode</span>
         </div>
       </footer>
+    </div>
+  </div>
+
+  <!-- Media Fullscreen / Forensic Inspection Lightbox Modal -->
+  <div id="media-lightbox-modal" class="cems-modal-overlay" style="display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;">
+    <div class="cems-modal-backdrop" onclick="closeMediaLightbox()" style="position:fixed;inset:0;background:rgba(2,6,23,0.85);backdrop-filter:blur(8px);"></div>
+    <div class="cems-modal-dialog" style="position:relative;z-index:100000;max-width:92vw;width:1050px;background:#060b14;border:1px solid var(--border-medium);border-radius:12px;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.85);margin:2rem auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0.9rem 1.25rem;border-bottom:1px solid var(--border-subtle);background:var(--bg-surface);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <i class="fa-solid fa-microscope" style="color:var(--gold-primary);font-size:1.1rem;"></i>
+          <div>
+            <h4 id="lightbox-title" style="margin:0;font-size:0.95rem;color:var(--text-main);font-weight:700;">Forensic Evidentiary Asset Inspector</h4>
+            <div id="lightbox-subtitle" class="font-mono" style="font-size:0.75rem;color:var(--text-dim);"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button id="lightbox-zoom-in" type="button" class="btn btn-secondary btn-sm" title="Zoom In"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+          <button id="lightbox-zoom-out" type="button" class="btn btn-secondary btn-sm" title="Zoom Out"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+          <button id="lightbox-zoom-reset" type="button" class="btn btn-secondary btn-sm" title="Reset Zoom"><i class="fa-solid fa-arrows-rotate"></i></button>
+          <a id="lightbox-download" href="#" class="btn btn-primary btn-sm" download><i class="fa-solid fa-download"></i> Download</a>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeMediaLightbox()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <div id="lightbox-content-body" style="padding:1.5rem;text-align:center;max-height:76vh;overflow:auto;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at center, #0f172a 0%, #030712 100%);">
+        <!-- Rendered dynamically -->
+      </div>
     </div>
   </div>
 

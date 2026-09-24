@@ -946,9 +946,131 @@ const StorageManager = {
   }
 };
 
+/**
+ * High-Capacity Evidentiary Media Vault (IndexedDB)
+ * Stores full-resolution evidentiary photos, videos, audio recordings & documents
+ * completely avoiding the 5MB browser localStorage quota.
+ */
+const MediaStorage = {
+  _db: null,
+
+  async getDB() {
+    if (this._db) return this._db;
+    return new Promise((resolve) => {
+      if (typeof window === 'undefined' || !window.indexedDB) {
+        return resolve(null);
+      }
+      try {
+        const req = indexedDB.open('cems_evidentiary_media_vault', 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('media_records')) {
+            db.createObjectStore('media_records', { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = (e) => {
+          this._db = e.target.result;
+          resolve(this._db);
+        };
+        req.onerror = (e) => {
+          console.warn('[MediaStorage] IndexedDB initialization warning:', e);
+          resolve(null);
+        };
+      } catch (err) {
+        console.warn('[MediaStorage] IndexedDB unsupported in current context:', err);
+        resolve(null);
+      }
+    });
+  },
+
+  async saveMedia(id, mediaData) {
+    if (!id || !mediaData) return false;
+    try {
+      const db = await this.getDB();
+      if (!db) {
+        // Fallback: If under 2MB, try localStorage as best effort
+        if (mediaData.dataUrl && mediaData.dataUrl.length < 2 * 1024 * 1024) {
+          try {
+            localStorage.setItem(`cems_media_${id}`, JSON.stringify(mediaData));
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }
+        return false;
+      }
+      return new Promise((resolve) => {
+        const tx = db.transaction('media_records', 'readwrite');
+        const store = tx.objectStore('media_records');
+        store.put({
+          id,
+          ...mediaData,
+          updatedAt: new Date().toISOString()
+        });
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => resolve(false);
+      });
+    } catch (e) {
+      console.warn('[MediaStorage] Error saving media:', e);
+      return false;
+    }
+  },
+
+  async getMedia(id) {
+    if (!id) return null;
+    try {
+      const db = await this.getDB();
+      if (!db) {
+        const raw = localStorage.getItem(`cems_media_${id}`);
+        return raw ? JSON.parse(raw) : null;
+      }
+      return new Promise((resolve) => {
+        const tx = db.transaction('media_records', 'readonly');
+        const store = tx.objectStore('media_records');
+        const req = store.get(id);
+        req.onsuccess = () => {
+          if (req.result) {
+            resolve(req.result);
+          } else {
+            // Check fallback
+            const raw = localStorage.getItem(`cems_media_${id}`);
+            resolve(raw ? JSON.parse(raw) : null);
+          }
+        };
+        req.onerror = () => {
+          const raw = localStorage.getItem(`cems_media_${id}`);
+          resolve(raw ? JSON.parse(raw) : null);
+        };
+      });
+    } catch (e) {
+      console.warn('[MediaStorage] Error reading media:', e);
+      return null;
+    }
+  },
+
+  async deleteMedia(id) {
+    if (!id) return false;
+    try {
+      localStorage.removeItem(`cems_media_${id}`);
+      const db = await this.getDB();
+      if (!db) return true;
+      return new Promise((resolve) => {
+        const tx = db.transaction('media_records', 'readwrite');
+        const store = tx.objectStore('media_records');
+        store.delete(id);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => resolve(false);
+      });
+    } catch (e) {
+      return false;
+    }
+  }
+};
+
 // Seed on module evaluation if storage is clean
 StorageManager.initDemoData(false);
 
 // Export for global browser window usage
 window.StorageKeys = StorageKeys;
 window.StorageManager = StorageManager;
+window.MediaStorage = MediaStorage;

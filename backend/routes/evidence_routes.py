@@ -69,6 +69,27 @@ def get_single_evidence(evidence_id):
         return error_response(f"Evidence '{evidence_id}' not found.", 404)
     return success_response(EvidenceModel.to_dict(row))
 
+@evidence_bp.route("/<evidence_id>/file", methods=["GET"])
+def get_evidence_file(evidence_id):
+    """Serve or stream uploaded evidence binary or media file."""
+    row = query_db("SELECT * FROM `evidence` WHERE `evidence_id` = %s OR `id` = %s;", (evidence_id, evidence_id), one=True)
+    if not row or not row.get("file_path"):
+        return error_response(f"File for evidence '{evidence_id}' not found.", 404)
+
+    file_path = row["file_path"].replace("\\", "/")
+    parts = file_path.split("/")
+    filename = parts[-1]
+    subfolder = parts[-2] if len(parts) > 1 else "evidence"
+
+    target_dir = Config.UPLOAD_FOLDER / subfolder
+    file_on_disk = target_dir / filename
+    if not file_on_disk.exists():
+        if (Config.UPLOAD_FOLDER / filename).exists():
+            return send_from_directory(str(Config.UPLOAD_FOLDER), filename, as_attachment=False)
+        return error_response("Evidentiary asset missing from storage vault.", 404)
+
+    return send_from_directory(str(target_dir), filename, as_attachment=False)
+
 @evidence_bp.route("", methods=["POST"])
 @token_optional
 def create_evidence():
